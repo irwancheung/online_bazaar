@@ -1,6 +1,11 @@
 include: package:lint/strict.yaml
 
+analyzer:
+  exclude:
+    - "firebase_options.dart"
+
 linter:
   rules:
     depend_on_referenced_packages: false
     prefer_single_quotes: true
+    combinators_ordering: false

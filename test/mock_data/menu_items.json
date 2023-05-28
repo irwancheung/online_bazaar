@@ -1,0 +1,50 @@
+[
+  {
+    "id": "1",
+    "name": "Chicken Burger",
+    "image": "https://i.ibb.co/7QpKsCX/burger.png",
+    "variants": ["Regular", "Medium", "Large"],
+    "sellingPrice": 120,
+    "soldQuantity": 0,
+    "remainingQuantity": 100,
+    "isVisible": true,
+    "createdAt": 1600000000,
+    "updatedAt": 1600000000
+  },
+  {
+    "id": "2",
+    "name": "Cheese Burger",
+    "image": "https://i.ibb.co/7QpKsCX/burger.png",
+    "variants": ["Regular", "Medium", "Large"],
+    "sellingPrice": 150,
+    "soldQuantity": 5,
+    "remainingQuantity": 95,
+    "isVisible": true,
+    "createdAt": 1600000000,
+    "updatedAt": 1600000000
+  },
+  {
+    "id": "3",
+    "name": "Veg Burger",
+    "image": "https://i.ibb.co/7QpKsCX/burger.png",
+    "variants": [],
+    "sellingPrice": 100,
+    "soldQuantity": 100,
+    "remainingQuantity": 0,
+    "isVisible": true,
+    "createdAt": 1600000000,
+    "updatedAt": 1600000000
+  },
+  {
+    "id": "4",
+    "name": "Beef Burger",
+    "image": "https://i.ibb.co/7QpKsCX/burger.png",
+    "variants": [],
+    "sellingPrice": 100,
+    "soldQuantity": 100,
+    "remainingQuantity": 0,
+    "isVisible": false,
+    "createdAt": 1600000000,
+    "updatedAt": 1600000000
+  }
+]

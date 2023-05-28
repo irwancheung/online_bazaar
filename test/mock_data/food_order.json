@@ -1,0 +1,115 @@
+{
+  "id": "1",
+  "customer": {
+    "id": "1",
+    "name": "John Doe",
+    "email": "john@doe.com",
+    "chaitya": "India",
+    "phone": "1234567890",
+    "address": "123, ABC Road, XYZ City",
+    "createdAt": 1623163200000,
+    "updatedAt": 1623163200000
+  },
+  "event": {
+    "id": "1",
+    "title": "Birthday Party",
+    "description": "Birthday Party",
+    "startAt": 1623163200000,
+    "endAt": 1623163200000
+  },
+  "type": "delivery",
+  "paymentType": "cash",
+  "status": "paymentPending",
+  "deliveryAddress": {
+    "id": "1",
+    "name": "John Doe",
+    "address": "123, ABC Road, XYZ City",
+    "phone": "1234567890",
+    "createdAt": 1623163200000,
+    "updatedAt": 1623163200000
+  },
+  "items": [
+    {
+      "id": "1",
+      "item": {
+        "id": "1",
+        "name": "Burger",
+        "image": "https://www.thespruceeats.com/",
+        "variants": ["No Onion", "With Onion"],
+        "sellingPrice": 120,
+        "soldQuantity": 0,
+        "remainingQuantity": 100,
+        "isVisible": true,
+        "createdAt": 1600000000,
+        "updatedAt": 1600000000
+      },
+      "name": "Burger",
+      "image": "https://www.thespruceeats.com/",
+      "variant": "Chicken",
+      "quantity": 1,
+      "price": 100,
+      "note": "No Onion",
+      "createdAt": 1623163200000,
+      "updatedAt": 1623163200000,
+      "deletedAt": 1623163200000
+    },
+    {
+      "id": "2",
+      "item": {
+        "id": "2",
+        "name": "Pizza",
+        "image": "https://www.thespruceeats.com/",
+        "variants": ["No Onion", "With Onion"],
+        "sellingPrice": 120,
+        "soldQuantity": 0,
+        "remainingQuantity": 100,
+        "isVisible": true,
+        "createdAt": 1600000000,
+        "updatedAt": 1600000000
+      },
+      "name": "Pizza",
+      "image": "https://www.thespruceeats.com/",
+      "variant": "Veg",
+      "quantity": 1,
+      "price": 200,
+      "note": "No Onion",
+      "createdAt": 1623163200000,
+      "updatedAt": 1623163200000,
+      "deletedAt": 1623163200000
+    },
+    {
+      "id": "3",
+      "item": {
+        "id": "3",
+        "name": "Pasta",
+        "image": "https://www.thespruceeats.com/",
+        "variants": ["No Onion", "With Onion"],
+        "sellingPrice": 120,
+        "soldQuantity": 0,
+        "remainingQuantity": 100,
+        "isVisible": true,
+        "createdAt": 1600000000,
+        "updatedAt": 1600000000
+      },
+      "name": "Pasta",
+      "image": "https://www.thespruceeats.com/",
+      "variant": "Veg",
+      "quantity": 1,
+      "price": 300,
+      "note": "No Onion",
+      "createdAt": 1623163200000,
+      "updatedAt": 1623163200000,
+      "deletedAt": 1623163200000
+    }
+  ],
+  "note": "Leave it on the door step",
+  "totalQuantity": 3,
+  "subTotalPrice": 600,
+  "deliveryCharge": 50,
+  "additionalCharge": 0,
+  "discount": 0,
+  "totalPrice": 650,
+  "createdAt": 1623163200000,
+  "updatedAt": 1623163200000,
+  "deletedAt": 1623163200000
+}

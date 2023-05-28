@@ -1,0 +1,38 @@
+[
+  {
+    "id": "1",
+    "name": "Burger",
+    "image": "https://www.thespruceeats.com/",
+    "variant": "Chicken",
+    "quantity": 1,
+    "price": 100,
+    "note": "No Onion",
+    "createdAt": 1623163200000,
+    "updatedAt": 1623163200000,
+    "deletedAt": 1623163200000
+  },
+  {
+    "id": "2",
+    "name": "Pizza",
+    "image": "https://www.thespruceeats.com/",
+    "variant": "Veg",
+    "quantity": 1,
+    "price": 200,
+    "note": "No Onion",
+    "createdAt": 1623163200000,
+    "updatedAt": 1623163200000,
+    "deletedAt": 1623163200000
+  },
+  {
+    "id": "3",
+    "name": "Pasta",
+    "image": "https://www.thespruceeats.com/",
+    "variant": "Veg",
+    "quantity": 1,
+    "price": 300,
+    "note": "No Onion",
+    "createdAt": 1623163200000,
+    "updatedAt": 1623163200000,
+    "deletedAt": 1623163200000
+  }
+]

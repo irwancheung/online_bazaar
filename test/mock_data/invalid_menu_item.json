@@ -1,0 +1,12 @@
+{
+  "id": "1",
+  "nameee": "Chicken Burger",
+  "image": "https://i.ibb.co/7QpKsCX/burger.png",
+  "variants": ["Regular", "Medium", "Large"],
+  "sellingPrice": 120,
+  "soldQuantity": 0,
+  "remainingQuantity": 100,
+  "isVisible": true,
+  "createdAt": 1600000000,
+  "updatedAt": 1600000000
+}
