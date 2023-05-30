@@ -6,6 +6,7 @@ import 'package:online_bazaar/features/customer/presentation/pages/cart_page_vie
 import 'package:online_bazaar/features/customer/presentation/pages/customer_profile_page_view.dart';
 import 'package:online_bazaar/features/customer/presentation/pages/menu_page_view.dart';
 import 'package:online_bazaar/features/shared/presentation/cubit/config_cubit.dart';
+import 'package:online_bazaar/features/shared/presentation/widgets/app_scaffold.dart';
 import 'package:online_bazaar/features/shared/presentation/widgets/background_container.dart';
 
 class HomePage extends StatefulWidget {
@@ -41,27 +42,7 @@ class _HomePageState extends State<HomePage> {
         final canOrder =
             now.isAfter(event.startAt) && now.isBefore(event.endAt);
 
-        return Scaffold(
-          body: SafeArea(
-            child: canOrder
-                ? PageView(
-                    controller: _pageController,
-                    physics: const NeverScrollableScrollPhysics(),
-                    children: [
-                      MenuPageView(
-                        title: event.title,
-                        pickupNote: event.pickupNote,
-                        startAt: event.startAt,
-                        endAt: event.endAt,
-                      ),
-                      CartPageView(key: UniqueKey()),
-                      const CustomerProfilePageView(),
-                    ],
-                  )
-                : BackgroundContainer(
-                    child: appText.header('Bazar belum dimulai.'),
-                  ),
-          ),
+        return AppScaffold(
           bottomNavigationBar: canOrder
               ? ValueListenableBuilder(
                   valueListenable: _activeIndex,
@@ -124,6 +105,26 @@ class _HomePageState extends State<HomePage> {
                   },
                 )
               : null,
+          child: SafeArea(
+            child: canOrder
+                ? PageView(
+                    controller: _pageController,
+                    physics: const NeverScrollableScrollPhysics(),
+                    children: [
+                      MenuPageView(
+                        title: event.title,
+                        pickupNote: event.pickupNote,
+                        startAt: event.startAt,
+                        endAt: event.endAt,
+                      ),
+                      CartPageView(key: UniqueKey()),
+                      const CustomerProfilePageView(),
+                    ],
+                  )
+                : BackgroundContainer(
+                    child: appText.header('Bazar belum dimulai.'),
+                  ),
+          ),
         );
       },
     );

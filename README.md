@@ -47,11 +47,11 @@ An online bazaar web application.
 - Run the app
   - For Customer:
   ```sh
-  flutter run --dart-define=USER_TYPE=customer
+  flutter run -d chrome --dart-define=USER_TYPE=customer
   ```
   - For Admin:
   ```sh
-  flutter run --dart-define=USER_TYPE=admin
+  flutter run -d chrome --dart-define=USER_TYPE=admin
   ```
 - _Optional_
   - To use Firebase App Check, add this argument:

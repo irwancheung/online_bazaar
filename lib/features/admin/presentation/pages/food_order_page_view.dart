@@ -94,11 +94,7 @@ class _FoodOrderPageViewState extends State<FoodOrderPageView>
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset(
-                'assets/icons/no_food_order.png',
-                height: 100.r,
-                width: 100.r,
-              ),
+              Image.asset('assets/icons/no_food_order.png', height: 100.r),
               10.h.height,
               appText.body(
                 'Belum ada pesanan.',

@@ -135,7 +135,7 @@ class _FoodOrderDialogState extends State<FoodOrderDialog> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 SizedBox(
-                                  width: 30.w,
+                                  width: 30,
                                   child: appText.caption('${item.quantity}x'),
                                 ),
                                 Expanded(

@@ -63,7 +63,7 @@ class FoodOrderCard extends StatelessWidget {
                 children: [
                   appText.label('${foodOrder.totalQuantity} item'),
                   const Spacer(),
-                  appText.label('Total Pesanan: '),
+                  appText.label('Total: '),
                   appText.label(
                     foodOrder.totalPrice.toCurrencyFormat(),
                     fontWeight: FontWeight.w600,

@@ -50,7 +50,7 @@ ios/firebase_app_id_file.json
 ios/Runner/GoogleService-Info.plist
 
 # VS Code related
-.vscode
+.vscode/
 
 # Github related
 .github/

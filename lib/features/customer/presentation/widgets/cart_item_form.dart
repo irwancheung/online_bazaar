@@ -9,6 +9,7 @@ import 'package:online_bazaar/features/customer/domain/repositories/customer_car
 import 'package:online_bazaar/features/customer/presentation/cubit/customer_cart_cubit.dart';
 import 'package:online_bazaar/features/shared/domain/entities/menu_item.dart';
 import 'package:online_bazaar/features/shared/presentation/widgets/app_elevated_button.dart';
+import 'package:online_bazaar/features/shared/presentation/widgets/rectangle_network_image.dart';
 import 'package:online_bazaar/features/shared/presentation/widgets/underline_text_field.dart';
 
 class CartItemForm extends StatefulWidget {
@@ -129,80 +130,98 @@ class _CartItemFormState extends State<CartItemForm> {
             padding: EdgeInsets.all(20.r),
             child: Column(
               children: [
-                appText.header(_item.name),
-                10.h.height,
-                appText.caption(_item.sellingPrice.toCurrencyFormat()),
-                10.h.height,
-                if (_variants.isNotEmpty)
-                  Column(
+                Expanded(
+                  child: ListView(
                     children: [
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 80.w),
-                        child: FormBuilderDropdown(
-                          name: _variantField,
-                          initialValue: _variants.first,
-                          enabled: widget.action == CartAction.add,
-                          items: _variants
-                              .map(
-                                (variant) => DropdownMenuItem(
-                                  value: variant,
-                                  child: appText.caption(variant),
-                                ),
-                              )
-                              .toList(),
-                          onChanged: (value) {},
+                        padding: const EdgeInsets.symmetric(horizontal: 50),
+                        child: RectangleNetworkImage(
+                          url: _item.image,
+                          fit: BoxFit.cover,
+                          borderRadius: 10.r,
                         ),
                       ),
                       10.h.height,
+                      Center(child: appText.header(_item.name)),
+                      10.h.height,
+                      Center(
+                        child: appText
+                            .caption(_item.sellingPrice.toCurrencyFormat()),
+                      ),
+                      10.h.height,
+                      if (_variants.isNotEmpty)
+                        Column(
+                          children: [
+                            SizedBox(
+                              width: 150,
+                              child: FormBuilderDropdown(
+                                name: _variantField,
+                                initialValue: _variants.first,
+                                enabled: widget.action == CartAction.add,
+                                items: _variants
+                                    .map(
+                                      (variant) => DropdownMenuItem(
+                                        value: variant,
+                                        child: appText.caption(variant),
+                                      ),
+                                    )
+                                    .toList(),
+                                onChanged: (value) {},
+                              ),
+                            ),
+                            10.h.height,
+                          ],
+                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              final value = _formKey.currentState
+                                  ?.fields[_quantityField]?.value as String?;
+
+                              final quantity = int.tryParse(value ?? '') ?? 1;
+
+                              if (quantity > 1) {
+                                _formKey.currentState?.fields[_quantityField]
+                                    ?.didChange((quantity - 1).toString());
+                              }
+                            },
+                            icon: const FaIcon(
+                              FontAwesomeIcons.circleMinus,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 50,
+                            child: UnderlineTextField(
+                              name: _quantityField,
+                              initialValue: widget.action == CartAction.add
+                                  ? '1'
+                                  : widget.cartItem!.quantity.toString(),
+                              textAlign: TextAlign.center,
+                              enabled: false,
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              final value = _formKey.currentState
+                                  ?.fields[_quantityField]?.value as String?;
+
+                              final quantity = int.tryParse(value ?? '') ?? 1;
+
+                              if (quantity < 99) {
+                                _formKey.currentState?.fields[_quantityField]
+                                    ?.didChange((quantity + 1).toString());
+                              }
+                            },
+                            icon: const FaIcon(
+                              FontAwesomeIcons.circlePlus,
+                            ),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        final value = _formKey.currentState
-                            ?.fields[_quantityField]?.value as String?;
-
-                        final quantity = int.tryParse(value ?? '') ?? 1;
-
-                        if (quantity > 1) {
-                          _formKey.currentState?.fields[_quantityField]
-                              ?.didChange((quantity - 1).toString());
-                        }
-                      },
-                      icon: const FaIcon(
-                        FontAwesomeIcons.circleMinus,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 30.w,
-                      child: UnderlineTextField(
-                        name: _quantityField,
-                        initialValue: widget.action == CartAction.add
-                            ? '1'
-                            : widget.cartItem!.quantity.toString(),
-                        textAlign: TextAlign.center,
-                        enabled: false,
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        final value = _formKey.currentState
-                            ?.fields[_quantityField]?.value as String?;
-
-                        final quantity = int.tryParse(value ?? '') ?? 1;
-
-                        if (quantity < 99) {
-                          _formKey.currentState?.fields[_quantityField]
-                              ?.didChange((quantity + 1).toString());
-                        }
-                      },
-                      icon: const FaIcon(
-                        FontAwesomeIcons.circlePlus,
-                      ),
-                    ),
-                  ],
                 ),
                 20.h.height,
                 ValueListenableBuilder(

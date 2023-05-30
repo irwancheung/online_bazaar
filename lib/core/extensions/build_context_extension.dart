@@ -4,6 +4,7 @@ extension BuildContextExtension on BuildContext {
   void showBottomSheet(Widget child) {
     showModalBottomSheet(
       context: this,
+      constraints: const BoxConstraints(maxWidth: 400),
       isScrollControlled: true,
       builder: (_) => child,
     );
@@ -19,7 +20,10 @@ extension BuildContextExtension on BuildContext {
         ),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(25.r),
-          child: child,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 400),
+            child: child,
+          ),
         ),
       ),
     );

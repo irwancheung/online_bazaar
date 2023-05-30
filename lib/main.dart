@@ -21,6 +21,7 @@ import 'package:online_bazaar/features/customer/presentation/cubit/customer_menu
 import 'package:online_bazaar/features/shared/presentation/cubit/config_cubit.dart';
 import 'package:online_bazaar/features/shared/presentation/theme.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 void main() async {
@@ -84,7 +85,12 @@ class MyApp extends StatelessWidget {
       child: ScreenUtilInit(
         minTextAdapt: true,
         builder: (context, child) {
-          return child!;
+          return ResponsiveBreakpoints.builder(
+            child: child!,
+            breakpoints: [
+              const Breakpoint(start: 0, end: maxMobileWidth, name: MOBILE)
+            ],
+          );
         },
         child: MaterialApp.router(
           debugShowCheckedModeBanner: false,

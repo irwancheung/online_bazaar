@@ -86,7 +86,7 @@ class _MenuPageViewState extends State<MenuPageView>
 
                 if (_items.isNotEmpty) {
                   return ListView.builder(
-                    padding: EdgeInsets.only(bottom: 30.h),
+                    padding: const EdgeInsets.only(bottom: 50, left: 30),
                     scrollDirection: Axis.horizontal,
                     itemCount: _items.length,
                     itemBuilder: (BuildContext context, int index) {
@@ -95,7 +95,7 @@ class _MenuPageViewState extends State<MenuPageView>
                   );
                 }
 
-                return appText.body('Belum ada menu.');
+                return Center(child: appText.body('Belum ada menu.'));
               },
             ),
           ),

@@ -62,11 +62,7 @@ class _MenuPageViewState extends State<MenuPageView>
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset(
-                    'assets/icons/no_menu_item.png',
-                    height: 100.r,
-                    width: 100.r,
-                  ),
+                  Image.asset('assets/icons/no_menu_item.png', height: 100.r),
                   10.h.height,
                   appText.body('Belum ada menu.', fontWeight: FontWeight.w600),
                 ],

@@ -60,7 +60,7 @@ class _CartItemRowState extends State<CartItemRow> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                width: 50.w,
+                width: 30,
                 child: appText.label(
                   '${widget.cartItem.quantity}x',
                   color: _textColor,

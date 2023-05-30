@@ -43,7 +43,7 @@ class _ItemCardState extends State<ItemCard> {
                       borderRadius: 10.r,
                     ),
                   ),
-                  10.w.width,
+                  10.width,
                   Expanded(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,

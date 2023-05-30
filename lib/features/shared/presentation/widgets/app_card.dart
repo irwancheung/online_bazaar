@@ -18,7 +18,7 @@ class AppCard extends StatelessWidget {
 
     return Card(
       elevation: 10,
-      margin: margin,
+      margin: margin ?? EdgeInsets.zero,
       shadowColor: theme.shadowColor.withOpacity(0.5),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(borderRadius),
