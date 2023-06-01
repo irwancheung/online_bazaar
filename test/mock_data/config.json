@@ -1,0 +1,16 @@
+{
+  "event": {
+    "name": "Bazar Online",
+    "pickupNote": "Diambil saat pertemuan Pria",
+    "startAt": 1623163200000,
+    "endAt": 1623163200000
+  },
+  "foodOrder": {
+    "orderNumberPrefix": "BO2A23"
+  },
+  "payment": {
+    "transferTo": "",
+    "transferNoteFormat": "Bazar Online, nama_pemesan, id_pesanan",
+    "sendTransferProofTo": "Admin (08123456789)"
+  }
+}
