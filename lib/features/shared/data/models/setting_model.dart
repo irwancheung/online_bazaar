@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:online_bazaar/features/admin/domain/repositories/admin_setting_repository.dart';
 import 'package:online_bazaar/features/shared/data/models/event_setting_model.dart';
 import 'package:online_bazaar/features/shared/data/models/food_order_setting_model.dart';
 import 'package:online_bazaar/features/shared/data/models/payment_setting_model.dart';
@@ -14,6 +15,45 @@ class SettingModel extends Setting {
     required super.foodOrder,
     required super.payment,
   });
+
+  factory SettingModel.empty() {
+    return const SettingModel(
+      event: EventSettingModel(name: '', pickupNote: ''),
+      foodOrder: FoodOrderSettingModel(orderNumberPrefix: ''),
+      payment: PaymentSettingModel(
+        transferTo: '',
+        transferNoteFormat: '',
+        sendTransferProofTo: '',
+      ),
+    );
+  }
+
+  factory SettingModel.fromEntity(Setting entity) {
+    return SettingModel(
+      event: entity.event,
+      foodOrder: entity.foodOrder,
+      payment: entity.payment,
+    );
+  }
+
+  factory SettingModel.fromUpdateSettingParams(UpdateSettingsParams params) {
+    return SettingModel(
+      event: EventSetting(
+        name: params.eventName,
+        pickupNote: params.eventPickupNote,
+        startAt: params.eventStartAt,
+        endAt: params.eventEndAt,
+      ),
+      foodOrder: FoodOrderSetting(
+        orderNumberPrefix: params.orderNumberPrefix,
+      ),
+      payment: PaymentSetting(
+        transferTo: params.transferTo,
+        transferNoteFormat: params.transferNoteFormat,
+        sendTransferProofTo: params.sendTransferProofTo,
+      ),
+    );
+  }
 
   Setting copyWith({
     EventSetting? event,

@@ -1,6 +1,6 @@
 import 'package:online_bazaar/core/service_locator/service_locator.dart';
 import 'package:online_bazaar/features/admin/data/data_sources/admin_auth_data_source.dart';
-import 'package:online_bazaar/features/admin/data/data_sources/admin_food_order_datasource.dart';
+import 'package:online_bazaar/features/admin/data/data_sources/admin_food_order_data_source.dart';
 import 'package:online_bazaar/features/admin/data/data_sources/admin_menu_data_source.dart';
 import 'package:online_bazaar/features/admin/data/repositories/admin_auth_repository_impl.dart';
 import 'package:online_bazaar/features/admin/data/repositories/admin_food_order_repository_impl.dart';
