@@ -1,31 +1,31 @@
 import 'dart:convert';
 
-import 'package:online_bazaar/features/shared/domain/entities/event_config.dart';
+import 'package:online_bazaar/features/shared/domain/entities/event_setting.dart';
 
-class EventConfigModel extends EventConfig {
-  const EventConfigModel({
+class EventSettingModel extends EventSetting {
+  const EventSettingModel({
     required super.name,
     required super.pickupNote,
     super.startAt,
     super.endAt,
   });
 
-  factory EventConfigModel.fromEntity(EventConfig eventConfig) {
-    return EventConfigModel(
-      name: eventConfig.name,
-      pickupNote: eventConfig.pickupNote,
-      startAt: eventConfig.startAt,
-      endAt: eventConfig.endAt,
+  factory EventSettingModel.fromEntity(EventSetting eventSetting) {
+    return EventSettingModel(
+      name: eventSetting.name,
+      pickupNote: eventSetting.pickupNote,
+      startAt: eventSetting.startAt,
+      endAt: eventSetting.endAt,
     );
   }
 
-  EventConfig copyWith({
+  EventSetting copyWith({
     String? name,
     String? pickupNote,
     DateTime? startAt,
     DateTime? endAt,
   }) {
-    return EventConfig(
+    return EventSetting(
       name: name ?? this.name,
       pickupNote: pickupNote ?? this.pickupNote,
       startAt: startAt ?? this.startAt,
@@ -42,8 +42,8 @@ class EventConfigModel extends EventConfig {
     };
   }
 
-  factory EventConfigModel.fromMap(Map<String, dynamic> map) {
-    return EventConfigModel(
+  factory EventSettingModel.fromMap(Map<String, dynamic> map) {
+    return EventSettingModel(
       name: map['name'] as String,
       pickupNote: map['pickupNote'] as String,
       startAt: map['startAt'] != null
@@ -57,6 +57,6 @@ class EventConfigModel extends EventConfig {
 
   String toJson() => jsonEncode(toMap());
 
-  factory EventConfigModel.fromJson(String source) =>
-      EventConfigModel.fromMap(jsonDecode(source) as Map<String, dynamic>);
+  factory EventSettingModel.fromJson(String source) =>
+      EventSettingModel.fromMap(jsonDecode(source) as Map<String, dynamic>);
 }

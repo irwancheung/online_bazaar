@@ -13,7 +13,7 @@
   "event": {
     "id": "1",
     "title": "Birthday Party",
-    "description": "Birthday Party",
+    "pickupNote": "Pick up at 3 AM",
     "startAt": 1623163200000,
     "endAt": 1623163200000
   },

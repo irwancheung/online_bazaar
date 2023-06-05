@@ -1,28 +1,28 @@
 import 'dart:convert';
 
-import 'package:online_bazaar/features/shared/domain/entities/payment_config.dart';
+import 'package:online_bazaar/features/shared/domain/entities/payment_setting.dart';
 
-class PaymentConfigModel extends PaymentConfig {
-  const PaymentConfigModel({
+class PaymentSettingModel extends PaymentSetting {
+  const PaymentSettingModel({
     required super.transferTo,
     required super.transferNoteFormat,
     required super.sendTransferProofTo,
   });
 
-  factory PaymentConfigModel.fromEntity(PaymentConfig paymentConfig) {
-    return PaymentConfigModel(
-      transferTo: paymentConfig.transferTo,
-      transferNoteFormat: paymentConfig.transferNoteFormat,
-      sendTransferProofTo: paymentConfig.sendTransferProofTo,
+  factory PaymentSettingModel.fromEntity(PaymentSetting paymentSetting) {
+    return PaymentSettingModel(
+      transferTo: paymentSetting.transferTo,
+      transferNoteFormat: paymentSetting.transferNoteFormat,
+      sendTransferProofTo: paymentSetting.sendTransferProofTo,
     );
   }
 
-  PaymentConfig copyWith({
+  PaymentSetting copyWith({
     String? transferTo,
     String? transferNoteFormat,
     String? sendTransferProofTo,
   }) {
-    return PaymentConfig(
+    return PaymentSetting(
       transferTo: transferTo ?? this.transferTo,
       transferNoteFormat: transferNoteFormat ?? this.transferNoteFormat,
       sendTransferProofTo: sendTransferProofTo ?? this.sendTransferProofTo,
@@ -37,8 +37,8 @@ class PaymentConfigModel extends PaymentConfig {
     };
   }
 
-  factory PaymentConfigModel.fromMap(Map<String, dynamic> map) {
-    return PaymentConfigModel(
+  factory PaymentSettingModel.fromMap(Map<String, dynamic> map) {
+    return PaymentSettingModel(
       transferTo: map['transferTo'] as String,
       transferNoteFormat: map['transferNoteFormat'] as String,
       sendTransferProofTo: map['sendTransferProofTo'] as String,
@@ -47,6 +47,6 @@ class PaymentConfigModel extends PaymentConfig {
 
   String toJson() => jsonEncode(toMap());
 
-  factory PaymentConfigModel.fromJson(String source) =>
-      PaymentConfigModel.fromMap(jsonDecode(source) as Map<String, dynamic>);
+  factory PaymentSettingModel.fromJson(String source) =>
+      PaymentSettingModel.fromMap(jsonDecode(source) as Map<String, dynamic>);
 }

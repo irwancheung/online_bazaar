@@ -1,11 +1,11 @@
 import 'package:equatable/equatable.dart';
 
-class PaymentConfig extends Equatable {
+class PaymentSetting extends Equatable {
   final String transferTo;
   final String transferNoteFormat;
   final String sendTransferProofTo;
 
-  const PaymentConfig({
+  const PaymentSetting({
     required this.transferTo,
     required this.transferNoteFormat,
     required this.sendTransferProofTo,

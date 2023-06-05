@@ -1,12 +1,12 @@
 import 'package:equatable/equatable.dart';
 
-class EventConfig extends Equatable {
+class EventSetting extends Equatable {
   final String name;
   final String pickupNote;
   final DateTime? startAt;
   final DateTime? endAt;
 
-  const EventConfig({
+  const EventSetting({
     required this.name,
     required this.pickupNote,
     this.startAt,

@@ -1,9 +1,9 @@
 import 'package:equatable/equatable.dart';
 
-class FoodOrderConfig extends Equatable {
+class FoodOrderSetting extends Equatable {
   final String orderNumberPrefix;
 
-  const FoodOrderConfig({required this.orderNumberPrefix});
+  const FoodOrderSetting({required this.orderNumberPrefix});
 
   @override
   List<Object?> get props => [orderNumberPrefix];
