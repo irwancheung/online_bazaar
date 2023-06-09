@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:online_bazaar/features/admin/domain/repositories/admin_setting_repository.dart';
 import 'package:online_bazaar/features/shared/data/models/event_setting_model.dart';
 import 'package:online_bazaar/features/shared/data/models/food_order_setting_model.dart';
 import 'package:online_bazaar/features/shared/data/models/payment_setting_model.dart';
@@ -11,16 +10,20 @@ import 'package:online_bazaar/features/shared/domain/entities/setting.dart';
 
 class SettingModel extends Setting {
   const SettingModel({
+    required super.id,
     required super.event,
     required super.foodOrder,
     required super.payment,
+    super.createdAt,
+    super.updatedAt,
   });
 
-  factory SettingModel.empty() {
-    return const SettingModel(
-      event: EventSettingModel(name: '', pickupNote: ''),
-      foodOrder: FoodOrderSettingModel(orderNumberPrefix: ''),
-      payment: PaymentSettingModel(
+  factory SettingModel.newSetting() {
+    return SettingModel(
+      id: DateTime.now().millisecondsSinceEpoch.toString(),
+      event: const EventSettingModel(name: '', pickupNote: ''),
+      foodOrder: const FoodOrderSettingModel(orderNumberPrefix: ''),
+      payment: const PaymentSettingModel(
         transferTo: '',
         transferNoteFormat: '',
         sendTransferProofTo: '',
@@ -28,61 +31,61 @@ class SettingModel extends Setting {
     );
   }
 
-  factory SettingModel.fromEntity(Setting entity) {
+  factory SettingModel.fromEntity(Setting setting) {
     return SettingModel(
-      event: entity.event,
-      foodOrder: entity.foodOrder,
-      payment: entity.payment,
+      id: setting.id,
+      event: setting.event,
+      foodOrder: setting.foodOrder,
+      payment: setting.payment,
+      createdAt: setting.createdAt,
+      updatedAt: setting.updatedAt,
     );
   }
 
-  factory SettingModel.fromUpdateSettingParams(UpdateSettingsParams params) {
-    return SettingModel(
-      event: EventSetting(
-        name: params.eventName,
-        pickupNote: params.eventPickupNote,
-        startAt: params.eventStartAt,
-        endAt: params.eventEndAt,
-      ),
-      foodOrder: FoodOrderSetting(
-        orderNumberPrefix: params.orderNumberPrefix,
-      ),
-      payment: PaymentSetting(
-        transferTo: params.transferTo,
-        transferNoteFormat: params.transferNoteFormat,
-        sendTransferProofTo: params.sendTransferProofTo,
-      ),
-    );
-  }
-
-  Setting copyWith({
+  SettingModel copyWith({
+    String? id,
     EventSetting? event,
     FoodOrderSetting? foodOrder,
     PaymentSetting? payment,
+    DateTime? createdAt,
+    DateTime? updatedAt,
   }) {
-    return Setting(
+    return SettingModel(
+      id: id ?? this.id,
       event: event ?? this.event,
       foodOrder: foodOrder ?? this.foodOrder,
       payment: payment ?? this.payment,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
     );
   }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
+      'id': id,
       'event': EventSettingModel.fromEntity(event).toMap(),
       'foodOrder': FoodOrderSettingModel.fromEntity(foodOrder).toMap(),
       'payment': PaymentSettingModel.fromEntity(payment).toMap(),
+      'createdAt': createdAt?.millisecondsSinceEpoch,
+      'updatedAt': updatedAt?.millisecondsSinceEpoch,
     };
   }
 
   factory SettingModel.fromMap(Map<String, dynamic> map) {
     return SettingModel(
+      id: map['id'] as String,
       event: EventSettingModel.fromMap(map['event'] as Map<String, dynamic>),
       foodOrder: FoodOrderSettingModel.fromMap(
         map['foodOrder'] as Map<String, dynamic>,
       ),
       payment:
           PaymentSettingModel.fromMap(map['payment'] as Map<String, dynamic>),
+      createdAt: map['createdAt'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int)
+          : null,
+      updatedAt: map['updatedAt'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(map['updatedAt'] as int)
+          : null,
     );
   }
 

@@ -1,4 +1,5 @@
 {
+  "id": "id",
   "event": {
     "name": "Bazar Online",
     "pickupNote": "Diambil saat pertemuan Pria",
@@ -12,5 +13,7 @@
     "transferTo": "",
     "transferNoteFormat": "Bazar Online, nama_pemesan, id_pesanan",
     "sendTransferProofTo": "Admin (08123456789)"
-  }
+  },
+  "createdAt": 1600000000,
+  "updatedAt": 1600000000
 }

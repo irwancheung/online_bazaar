@@ -45,8 +45,8 @@ void main() {
         final tParams = UpdateSettingsParams(
           eventName: 'eventName',
           eventPickupNote: 'eventPickupNote',
-          eventStartAt: DateTime.utc(0),
-          eventEndAt: DateTime.utc(0),
+          eventStartAt: DateTime.utc(0).toLocal(),
+          eventEndAt: DateTime.utc(0).toLocal(),
           orderNumberPrefix: 'orderNumberPrefix',
           transferTo: 'transferTo',
           transferNoteFormat: 'transferNoteFormat',

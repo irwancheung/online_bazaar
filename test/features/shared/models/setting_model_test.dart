@@ -12,6 +12,7 @@ void main() {
     test('should be a subclass of Setting entity.', () {
       // Arrange
       const tConfigModel = SettingModel(
+        id: 'id',
         event: EventSetting(name: 'name', pickupNote: 'pickupNote'),
         foodOrder: FoodOrderSetting(orderNumberPrefix: 'orderNumberPrefix'),
         payment: PaymentSetting(

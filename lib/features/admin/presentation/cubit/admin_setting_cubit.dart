@@ -12,7 +12,7 @@ class AdminSettingCubit extends HydratedCubit<AdminSettingState> {
   AdminSettingCubit({
     required AdminSettingRepository repository,
   })  : _repository = repository,
-        super(AdminSettingState(setting: SettingModel.empty()));
+        super(AdminSettingState(setting: SettingModel.newSetting()));
 
   Future<void> getSetting() async {
     try {

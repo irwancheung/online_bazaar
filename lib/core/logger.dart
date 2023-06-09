@@ -18,9 +18,9 @@ class Logger {
       final message = "$error\n${stackTrace ?? ''}";
 
       _log(message: message, color: color);
+    } else {
+      await Sentry.captureException(error, stackTrace: stackTrace);
     }
-
-    await Sentry.captureException(error, stackTrace: stackTrace);
   }
 
   void _log({required dynamic message, required String color}) {

@@ -57,6 +57,7 @@ void main() {
 
   group('AdminSettingRepositoryImpl', () {
     const tSettingModel = SettingModel(
+      id: 'id',
       event: EventSetting(name: 'name', pickupNote: 'pickupNote'),
       foodOrder: FoodOrderSetting(orderNumberPrefix: 'orderNumberPrefix'),
       payment: PaymentSetting(
@@ -116,7 +117,22 @@ void main() {
           'should return Setting with updated value when dataSource is successful.',
           () async {
         // Arrange
-        final newTsettingModel = SettingModel.fromUpdateSettingParams(tParams);
+        final newTsettingModel = tSettingModel.copyWith(
+          event: EventSetting(
+            name: tParams.eventName,
+            pickupNote: tParams.eventPickupNote,
+            startAt: tParams.eventStartAt,
+            endAt: tParams.eventEndAt,
+          ),
+          foodOrder: FoodOrderSetting(
+            orderNumberPrefix: tParams.orderNumberPrefix,
+          ),
+          payment: PaymentSetting(
+            transferTo: tParams.transferTo,
+            transferNoteFormat: tParams.transferNoteFormat,
+            sendTransferProofTo: tParams.sendTransferProofTo,
+          ),
+        );
 
         setInternetConnected();
         when(mockDataSource.updateSetting(tParams))

@@ -6,6 +6,9 @@ import 'package:online_bazaar/core/exceptions/setting_exception.dart';
 import 'package:online_bazaar/features/admin/domain/repositories/admin_setting_repository.dart';
 import 'package:online_bazaar/features/admin/presentation/cubit/admin_setting_cubit.dart';
 import 'package:online_bazaar/features/shared/data/models/setting_model.dart';
+import 'package:online_bazaar/features/shared/domain/entities/event_setting.dart';
+import 'package:online_bazaar/features/shared/domain/entities/food_order_setting.dart';
+import 'package:online_bazaar/features/shared/domain/entities/payment_setting.dart';
 
 import '../../../../helpers.dart';
 import 'admin_setting_cubit_test.mocks.dart';
@@ -23,17 +26,15 @@ void main() {
   });
 
   group('AdminSettingCubit', () {
-    final tInitialSetting = SettingModel.empty();
-
     test('initial; state should be AdminSettingState', () async {
-      expect(cubit.state, AdminSettingState(setting: tInitialSetting));
+      expect(cubit.state, AdminSettingState(setting: cubit.state.setting));
     });
 
     group('getSetting()', () {
       test('should call repository.getSetting() once.', () async {
         // Arrange
         when(mockRepository.getSetting())
-            .thenAnswer((_) async => tInitialSetting);
+            .thenAnswer((_) async => cubit.state.setting);
 
         // Act
         cubit.getSetting();
@@ -47,13 +48,13 @@ void main() {
         'emits [GetSettingLoadingState, GetSettingSuccessState] when repo is successful.',
         setUp: () {
           when(mockRepository.getSetting())
-              .thenAnswer((_) async => tInitialSetting);
+              .thenAnswer((_) async => cubit.state.setting);
         },
         build: () => cubit,
         act: (cubit) => cubit.getSetting(),
         expect: () => <AdminSettingState>[
-          GetSettingLoadingState(setting: tInitialSetting),
-          GetSettingSuccessState(setting: tInitialSetting)
+          GetSettingLoadingState(setting: cubit.state.setting),
+          GetSettingSuccessState(setting: cubit.state.setting)
         ],
       );
 
@@ -66,8 +67,8 @@ void main() {
         build: () => cubit,
         act: (cubit) => cubit.getSetting(),
         expect: () => <AdminSettingState>[
-          GetSettingLoadingState(setting: tInitialSetting),
-          GetSettingFailureState(setting: tInitialSetting, errorMessage: '')
+          GetSettingLoadingState(setting: cubit.state.setting),
+          GetSettingFailureState(setting: cubit.state.setting, errorMessage: '')
         ],
       );
     });
@@ -84,12 +85,21 @@ void main() {
         sendTransferProofTo: 'sendTransferProofTo',
       );
 
-      final tUpdatedSetting = SettingModel.fromUpdateSettingParams(tParams);
+      const tUpdatedSetting = SettingModel(
+        id: 'id',
+        event: EventSetting(name: 'name', pickupNote: 'pickupNote'),
+        foodOrder: FoodOrderSetting(orderNumberPrefix: 'orderNumberPrefix'),
+        payment: PaymentSetting(
+          transferTo: 'transferTo',
+          transferNoteFormat: 'transferNoteFormat',
+          sendTransferProofTo: 'sendTransferProofTo',
+        ),
+      );
 
       test('should call repository.updateSetting() once.', () async {
         // Arrange
         when(mockRepository.updateSetting(any))
-            .thenAnswer((_) async => tInitialSetting);
+            .thenAnswer((_) async => cubit.state.setting);
 
         // Act
         cubit.updateSetting(tParams);
@@ -99,32 +109,37 @@ void main() {
         verify(mockRepository.updateSetting(any)).called(1);
       });
 
+      late AdminSettingState preState;
       blocTest<AdminSettingCubit, AdminSettingState>(
         'emits [UpdateSettingLoadingState, UpdateSettingSuccessState] when repo is successful.',
         setUp: () {
+          preState = cubit.state;
+
           when(mockRepository.updateSetting(any))
               .thenAnswer((_) async => tUpdatedSetting);
         },
         build: () => cubit,
         act: (cubit) => cubit.updateSetting(tParams),
         expect: () => <AdminSettingState>[
-          UpdateSettingLoadingState(setting: tInitialSetting),
-          UpdateSettingSuccessState(setting: tUpdatedSetting)
+          UpdateSettingLoadingState(setting: preState.setting),
+          const UpdateSettingSuccessState(setting: tUpdatedSetting)
         ],
       );
 
       blocTest<AdminSettingCubit, AdminSettingState>(
         'emits [UpdateSettingLoadingState, UpdateSettingFailureState] when repo is  failed.',
         setUp: () {
+          preState = cubit.state;
+
           when(mockRepository.updateSetting(any))
               .thenThrow(const UpdateSettingException(''));
         },
         build: () => cubit,
         act: (cubit) => cubit.updateSetting(tParams),
         expect: () => <AdminSettingState>[
-          UpdateSettingLoadingState(setting: tInitialSetting),
+          UpdateSettingLoadingState(setting: cubit.state.setting),
           UpdateSettingFailureState(
-            setting: tInitialSetting,
+            setting: cubit.state.setting,
             errorMessage: '',
           )
         ],

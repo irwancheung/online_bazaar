@@ -3,6 +3,7 @@ import 'package:online_bazaar/exports.dart';
 import 'package:online_bazaar/features/admin/presentation/pages/food_order_page_view.dart';
 import 'package:online_bazaar/features/admin/presentation/pages/logout_page_view.dart';
 import 'package:online_bazaar/features/admin/presentation/pages/menu_page_view.dart';
+import 'package:online_bazaar/features/admin/presentation/pages/setting_page_view.dart';
 import 'package:online_bazaar/features/shared/presentation/widgets/app_scaffold.dart';
 
 class AdminPage extends StatefulWidget {
@@ -31,6 +32,9 @@ class _AdminPageState extends State<AdminPage> {
             showSelectedLabels: true,
             currentIndex: _activeIndex.value,
             onTap: _changePage,
+            selectedLabelStyle: TextStyle(fontSize: 12.sp),
+            unselectedLabelStyle: TextStyle(fontSize: 10.sp),
+            type: BottomNavigationBarType.fixed,
             items: const [
               BottomNavigationBarItem(
                 icon: FaIcon(FontAwesomeIcons.bowlFood),
@@ -39,6 +43,10 @@ class _AdminPageState extends State<AdminPage> {
               BottomNavigationBarItem(
                 icon: FaIcon(FontAwesomeIcons.listCheck),
                 label: 'Pesanan',
+              ),
+              BottomNavigationBarItem(
+                icon: FaIcon(FontAwesomeIcons.gear),
+                label: 'Pengaturan',
               ),
               BottomNavigationBarItem(
                 icon: FaIcon(FontAwesomeIcons.rightFromBracket),
@@ -55,6 +63,7 @@ class _AdminPageState extends State<AdminPage> {
           children: const [
             MenuPageView(),
             FoodOrderPageView(),
+            SettingPageView(),
             LogOutPageView(),
           ],
         ),

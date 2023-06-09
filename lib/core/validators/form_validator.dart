@@ -4,6 +4,14 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:online_bazaar/exports.dart';
 
 class FormValidators {
+  static FormFieldValidator<String> alphanumeric({
+    String? errorText,
+  }) =>
+      (valueCandidate) => true == valueCandidate?.isNotEmpty &&
+              null == RegExp(r'^[a-zA-Z0-9]+$').firstMatch(valueCandidate!)
+          ? errorText ?? 'Hanya karakter alphanumeric yang diperbolehkan.'
+          : null;
+
   static FormFieldValidator<T> currency<T>({
     int? min,
     int? max,

@@ -14,6 +14,7 @@ import 'package:online_bazaar/exports.dart';
 import 'package:online_bazaar/features/admin/presentation/cubit/admin_auth_cubit.dart';
 import 'package:online_bazaar/features/admin/presentation/cubit/admin_food_order_cubit.dart';
 import 'package:online_bazaar/features/admin/presentation/cubit/admin_menu_cubit.dart';
+import 'package:online_bazaar/features/admin/presentation/cubit/admin_setting_cubit.dart';
 import 'package:online_bazaar/features/customer/presentation/cubit/customer_cart_cubit.dart';
 import 'package:online_bazaar/features/customer/presentation/cubit/customer_cubit.dart';
 import 'package:online_bazaar/features/customer/presentation/cubit/customer_food_order_cubit.dart';
@@ -75,6 +76,7 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (context) => sl<AdminAuthCubit>()),
           BlocProvider(create: (context) => sl<AdminMenuCubit>()),
           BlocProvider(create: (context) => sl<AdminFoodOrderCubit>()),
+          BlocProvider(create: (context) => sl<AdminSettingCubit>()),
         ] else ...[
           BlocProvider(create: (context) => sl<CustomerCubit>()),
           BlocProvider(create: (context) => sl<CustomerMenuCubit>()),
