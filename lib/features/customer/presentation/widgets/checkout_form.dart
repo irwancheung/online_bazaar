@@ -7,9 +7,8 @@ import 'package:online_bazaar/exports.dart';
 import 'package:online_bazaar/features/customer/domain/entities/cart.dart';
 import 'package:online_bazaar/features/customer/domain/repositories/customer_cart_repository.dart';
 import 'package:online_bazaar/features/customer/presentation/cubit/customer_cart_cubit.dart';
+import 'package:online_bazaar/features/customer/presentation/cubit/customer_setting_cubit.dart';
 import 'package:online_bazaar/features/shared/data/models/delivery_address_model.dart';
-import 'package:online_bazaar/features/shared/domain/entities/event.dart';
-import 'package:online_bazaar/features/shared/presentation/cubit/config_cubit.dart';
 import 'package:online_bazaar/features/shared/presentation/widgets/app_elevated_button.dart';
 import 'package:online_bazaar/features/shared/presentation/widgets/form_dropdown.dart';
 import 'package:online_bazaar/features/shared/presentation/widgets/underline_text_field.dart';
@@ -59,8 +58,7 @@ class _CheckoutFormState extends State<CheckoutForm> {
         );
       }
 
-      final config = context.read<ConfigCubit>().state;
-      final event = config.event;
+      final setting = context.read<CustomerSettingCubit>().state.setting!;
 
       final params = CompleteCheckoutParams(
         cart: context.read<CustomerCartCubit>().state.cart,
@@ -69,13 +67,7 @@ class _CheckoutFormState extends State<CheckoutForm> {
         paymentType:
             PaymentType.values.firstWhere((e) => e.name == paymentTypeStr),
         orderType: OrderType.values.firstWhere((e) => e.name == orderTypeStr),
-        event: Event(
-          id: 'id',
-          title: event.title,
-          pickupNote: event.pickupNote,
-          startAt: event.startAt,
-          endAt: event.endAt,
-        ),
+        setting: setting,
       );
 
       context.read<CustomerCartCubit>().completeCheckout(params);

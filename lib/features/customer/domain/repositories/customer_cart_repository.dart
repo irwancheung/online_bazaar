@@ -3,9 +3,9 @@ import 'package:online_bazaar/core/enums/food_order_enum.dart';
 import 'package:online_bazaar/features/customer/domain/entities/cart.dart';
 import 'package:online_bazaar/features/shared/domain/entities/customer.dart';
 import 'package:online_bazaar/features/shared/domain/entities/delivery_address.dart';
-import 'package:online_bazaar/features/shared/domain/entities/event.dart';
 import 'package:online_bazaar/features/shared/domain/entities/food_order.dart';
 import 'package:online_bazaar/features/shared/domain/entities/menu_item.dart';
+import 'package:online_bazaar/features/shared/domain/entities/setting.dart';
 
 abstract class CustomerCartRepository {
   Future<Cart> setCartCustomer(SetCartCustomerParams customer);
@@ -96,7 +96,7 @@ class CompleteCheckoutParams extends Equatable {
   final OrderType orderType;
   final PaymentType paymentType;
   final String note;
-  final Event event;
+  final Setting setting;
   final DeliveryAddress? deliveryAddress;
 
   const CompleteCheckoutParams({
@@ -104,7 +104,7 @@ class CompleteCheckoutParams extends Equatable {
     required this.orderType,
     required this.paymentType,
     required this.note,
-    required this.event,
+    required this.setting,
     this.deliveryAddress,
   });
 
@@ -113,7 +113,7 @@ class CompleteCheckoutParams extends Equatable {
     OrderType? orderType,
     PaymentType? paymentType,
     String? note,
-    Event? event,
+    Setting? setting,
     DeliveryAddress? deliveryAddress,
   }) {
     return CompleteCheckoutParams(
@@ -121,7 +121,7 @@ class CompleteCheckoutParams extends Equatable {
       orderType: orderType ?? this.orderType,
       paymentType: paymentType ?? this.paymentType,
       note: note ?? this.note,
-      event: event ?? this.event,
+      setting: setting ?? this.setting,
       deliveryAddress: deliveryAddress ?? this.deliveryAddress,
     );
   }
@@ -132,7 +132,7 @@ class CompleteCheckoutParams extends Equatable {
         orderType,
         paymentType,
         note,
-        event,
+        setting,
         deliveryAddress,
       ];
 }

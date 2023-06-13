@@ -6,15 +6,17 @@ class AppText {
     String text, {
     Color? color,
     FontWeight? fontWeight,
+    TextAlign? textAlign,
     TextOverflow? overflow,
     TextDecoration? decoration,
   }) {
     return Text(
       text,
+      textAlign: textAlign,
       overflow: overflow,
       style: GoogleFonts.varelaRound(
         height: 1,
-        fontSize: 30.sp,
+        fontSize: 26.sp,
         color: color,
         fontWeight: fontWeight,
         decoration: decoration,
@@ -91,6 +93,7 @@ class AppText {
 
   Text label(
     String text, {
+    FontStyle? fontStyle,
     Color? color,
     FontWeight? fontWeight,
     TextAlign? textAlign,
@@ -105,6 +108,7 @@ class AppText {
       maxLines: maxLines,
       style: GoogleFonts.varelaRound(
         fontSize: 12.sp,
+        fontStyle: fontStyle,
         color: color,
         fontWeight: fontWeight,
         decoration: decoration,

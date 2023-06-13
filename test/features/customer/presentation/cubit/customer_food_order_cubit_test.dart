@@ -9,6 +9,7 @@ import 'package:online_bazaar/features/customer/presentation/cubit/customer_food
 import 'package:online_bazaar/features/shared/domain/entities/customer.dart';
 import 'package:online_bazaar/features/shared/domain/entities/event.dart';
 import 'package:online_bazaar/features/shared/domain/entities/food_order.dart';
+import 'package:online_bazaar/features/shared/domain/entities/payment.dart';
 
 import '../../../../helpers.dart';
 import 'customer_food_order_cubit_test.mocks.dart';
@@ -36,11 +37,16 @@ void main() {
       final tFoodOrder = FoodOrder(
         id: 'id',
         event: Event(
-          id: 'id',
-          title: 'title',
+          name: 'name',
           pickupNote: 'pickupNote',
           startAt: DateTime.utc(0),
           endAt: DateTime.utc(0),
+        ),
+        payment: const Payment(
+          type: PaymentType.bankTransfer,
+          transferTo: 'transferTo',
+          transferNoteFormat: 'transferNoteFormat',
+          sendTransferProofTo: 'sendTransferProofTo',
         ),
         customer: const Customer(
           id: 'id',
@@ -51,7 +57,6 @@ void main() {
           address: 'address',
         ),
         type: OrderType.delivery,
-        paymentType: PaymentType.bankTransfer,
         status: OrderStatus.completed,
         items: const [],
         note: 'note',

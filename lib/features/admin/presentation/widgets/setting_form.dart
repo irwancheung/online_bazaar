@@ -40,6 +40,43 @@ class _SettingFormState extends State<SettingForm>
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final formState = _formKey.currentState!;
+      formState
+        ..setInternalFieldValue(
+          _eventNameField,
+          widget.setting.event.name,
+        )
+        ..setInternalFieldValue(
+          _eventPickupNoteField,
+          widget.setting.event.pickupNote,
+        )
+        ..setInternalFieldValue(
+          _eventStartAtField,
+          widget.setting.event.startAt,
+        )
+        ..setInternalFieldValue(
+          _eventEndAtField,
+          widget.setting.event.endAt,
+        )
+        ..setInternalFieldValue(
+          _orderNumberPrefixField,
+          widget.setting.foodOrder.orderNumberPrefix,
+        )
+        ..setInternalFieldValue(
+          _transferToField,
+          widget.setting.payment.transferTo,
+        )
+        ..setInternalFieldValue(
+          _transferNoteFormatField,
+          widget.setting.payment.transferNoteFormat,
+        )
+        ..setInternalFieldValue(
+          _sendTransferProofToField,
+          widget.setting.payment.sendTransferProofTo,
+        );
+    });
   }
 
   @override
@@ -50,54 +87,7 @@ class _SettingFormState extends State<SettingForm>
 
   Future<void> _updateSetting() async {
     if (_formKey.currentState?.saveAndValidate() ?? false) {
-      bool isFormValid = true;
-
       final formValues = _formKey.currentState!.value;
-
-      if (formValues.length < 8) {
-        isFormValid = false;
-      } else {
-        formValues.forEach((key, value) {
-          switch (key) {
-            case _eventNameField:
-              if (value == null) {
-                isFormValid = false;
-              }
-            case _eventPickupNoteField:
-              if (value == null) {
-                isFormValid = false;
-              }
-            case _eventStartAtField:
-              if (value == null) {
-                isFormValid = false;
-              }
-            case _eventEndAtField:
-              if (value == null) {
-                isFormValid = false;
-              }
-            case _orderNumberPrefixField:
-              if (value == null) {
-                isFormValid = false;
-              }
-            case _transferToField:
-              if (value == null) {
-                isFormValid = false;
-              }
-            case _transferNoteFormatField:
-              if (value == null) {
-                isFormValid = false;
-              }
-            case _sendTransferProofToField:
-              if (value == null) {
-                isFormValid = false;
-              }
-          }
-        });
-      }
-
-      if (!isFormValid) {
-        return _showError();
-      }
 
       final eventName = formValues[_eventNameField] as String;
       final eventPickupNote = formValues[_eventPickupNoteField] as String;
@@ -127,8 +117,7 @@ class _SettingFormState extends State<SettingForm>
   }
 
   void _showError() {
-    context
-        .showErrorSnackBar('Pastikan semua kolom sudah terisi dengan benar.');
+    context.showErrorSnackBar('Pastikan semua kolom sudah diisi dengan benar.');
   }
 
   @override
@@ -178,7 +167,7 @@ class _SettingFormState extends State<SettingForm>
                             label: 'Nama Kegiatan',
                             hintText: 'Contoh: Bazar Online 2023',
                             initialValue: widget.setting.event.name,
-                            maxLength: 50,
+                            maxLength: 20,
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(),
                               FormBuilderValidators.minLength(10),
@@ -242,9 +231,10 @@ class _SettingFormState extends State<SettingForm>
                           UnderlineTextField(
                             name: _transferToField,
                             label: 'Transfer ke',
-                            hintText: 'Contoh: BCA 8370009211 a.n. YPSBDI',
+                            hintText:
+                                'Contoh: BCA 8370009211 Yayasan Pandita Sabha BDI',
                             initialValue: widget.setting.payment.transferTo,
-                            maxLength: 100,
+                            maxLength: 30,
                             validator: FormBuilderValidators.compose([
                               FormBuilderValidators.required(),
                               FormBuilderValidators.minLength(10),

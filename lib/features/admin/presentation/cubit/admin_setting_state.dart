@@ -13,16 +13,16 @@ class AdminSettingState extends Equatable {
     return AdminSettingState(setting: setting ?? this.setting);
   }
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'setting': SettingModel.fromEntity(setting).toMap(),
-    };
-  }
-
   factory AdminSettingState.fromMap(Map<String, dynamic> map) {
     return AdminSettingState(
       setting: SettingModel.fromMap(map['setting'] as Map<String, dynamic>),
     );
+  }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'setting': SettingModel.fromEntity(setting).toMap(),
+    };
   }
 
   @override

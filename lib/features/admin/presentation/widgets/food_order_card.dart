@@ -36,7 +36,7 @@ class FoodOrderCard extends StatelessWidget {
               Row(
                 children: [
                   appText.label(
-                    foodOrder.orderNumber,
+                    'ID: ${foodOrder.id}',
                     color: theme.hintColor,
                   ),
                   const Spacer(),

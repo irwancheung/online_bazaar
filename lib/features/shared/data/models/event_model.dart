@@ -1,11 +1,11 @@
 import 'dart:convert';
 
 import 'package:online_bazaar/features/shared/domain/entities/event.dart';
+import 'package:online_bazaar/features/shared/domain/entities/event_setting.dart';
 
 class EventModel extends Event {
   const EventModel({
-    required super.id,
-    required super.title,
+    required super.name,
     required super.pickupNote,
     required super.startAt,
     required super.endAt,
@@ -13,24 +13,31 @@ class EventModel extends Event {
 
   factory EventModel.fromEntity(Event event) {
     return EventModel(
-      id: event.id,
-      title: event.title,
+      name: event.name,
       pickupNote: event.pickupNote,
       startAt: event.startAt,
       endAt: event.endAt,
     );
   }
 
+  factory EventModel.fromEventSetting(EventSetting event) {
+    return EventModel(
+      name: event.name,
+      pickupNote: event.pickupNote,
+      startAt: event.startAt!,
+      endAt: event.endAt!,
+    );
+  }
+
   EventModel copyWith({
     String? id,
-    String? title,
+    String? name,
     String? pickupNote,
     DateTime? startAt,
     DateTime? endAt,
   }) {
     return EventModel(
-      id: id ?? this.id,
-      title: title ?? this.title,
+      name: name ?? this.name,
       pickupNote: pickupNote ?? this.pickupNote,
       startAt: startAt ?? this.startAt,
       endAt: endAt ?? this.endAt,
@@ -39,8 +46,7 @@ class EventModel extends Event {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'id': id,
-      'title': title,
+      'name': name,
       'pickupNote': pickupNote,
       'startAt': startAt.millisecondsSinceEpoch,
       'endAt': endAt.millisecondsSinceEpoch,
@@ -49,8 +55,7 @@ class EventModel extends Event {
 
   factory EventModel.fromMap(Map<String, dynamic> map) {
     return EventModel(
-      id: map['id'] as String,
-      title: map['title'] as String,
+      name: map['name'] as String,
       pickupNote: map['pickupNote'] as String,
       startAt: DateTime.fromMillisecondsSinceEpoch(map['startAt'] as int),
       endAt: DateTime.fromMillisecondsSinceEpoch(map['endAt'] as int),

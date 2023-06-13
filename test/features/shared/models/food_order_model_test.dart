@@ -4,16 +4,24 @@ import 'package:online_bazaar/features/shared/data/models/food_order_model.dart'
 import 'package:online_bazaar/features/shared/domain/entities/customer.dart';
 import 'package:online_bazaar/features/shared/domain/entities/event.dart';
 import 'package:online_bazaar/features/shared/domain/entities/food_order.dart';
+import 'package:online_bazaar/features/shared/domain/entities/payment.dart';
+
+import '../../../helpers.dart';
 
 void main() {
   final tFoodOrderModel = FoodOrderModel(
     id: 'id',
     event: Event(
-      id: 'id',
-      title: 'title',
+      name: 'name',
       pickupNote: 'pickupNote',
       startAt: DateTime.utc(0),
       endAt: DateTime.utc(0),
+    ),
+    payment: const Payment(
+      type: PaymentType.bankTransfer,
+      transferTo: 'transferTo',
+      transferNoteFormat: 'transferNoteFormat',
+      sendTransferProofTo: 'sendTransferProofTo',
     ),
     customer: const Customer(
       id: 'id',
@@ -24,7 +32,6 @@ void main() {
       address: 'address',
     ),
     type: OrderType.delivery,
-    paymentType: PaymentType.bankTransfer,
     status: OrderStatus.completed,
     items: const [],
     note: 'note',
@@ -40,6 +47,17 @@ void main() {
     test('should be a subclass of FoodOrder entity.', () async {
       // assert
       expect(tFoodOrderModel, isA<FoodOrder>());
+    });
+
+    test('fromJson() should return FoodModel.', () async {
+      // Arrange
+      final tFoodOrderJsonStr = fixture('food_order.json');
+
+      // Act
+      final result = FoodOrderModel.fromJson(tFoodOrderJsonStr);
+
+      // Assert
+      expect(result, isA<FoodOrderModel>());
     });
   });
 }

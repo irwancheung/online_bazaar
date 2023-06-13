@@ -2,10 +2,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:online_bazaar/exports.dart';
 import 'package:online_bazaar/features/customer/presentation/cubit/customer_cart_cubit.dart';
+import 'package:online_bazaar/features/customer/presentation/cubit/customer_setting_cubit.dart';
 import 'package:online_bazaar/features/customer/presentation/pages/cart_page_view.dart';
 import 'package:online_bazaar/features/customer/presentation/pages/customer_profile_page_view.dart';
+import 'package:online_bazaar/features/customer/presentation/pages/future_event_page.dart';
 import 'package:online_bazaar/features/customer/presentation/pages/menu_page_view.dart';
-import 'package:online_bazaar/features/shared/presentation/cubit/config_cubit.dart';
+import 'package:online_bazaar/features/customer/presentation/pages/no_event_page.dart';
 import 'package:online_bazaar/features/shared/presentation/widgets/app_scaffold.dart';
 import 'package:online_bazaar/features/shared/presentation/widgets/background_container.dart';
 
@@ -23,7 +25,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    context.read<ConfigCubit>().fetchConfig();
+    context.read<CustomerSettingCubit>().getSetting();
   }
 
   void _changePage(int index) {
@@ -35,12 +37,30 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return BlocBuilder<ConfigCubit, ConfigState>(
+    return BlocBuilder<CustomerSettingCubit, CustomerSettingState>(
       builder: (context, state) {
-        final event = state.event;
+        final setting = state.setting;
+
+        if (setting == null) {
+          return const AppScaffold(
+            child: Center(child: CircularProgressIndicator()),
+          );
+        }
+
+        final event = state.setting!.event;
         final now = DateTime.now();
+
+        if ((event.startAt == null && event.endAt == null) ||
+            now.isAfter(event.endAt!)) {
+          return const NoEventPage();
+        }
+
+        if (event.startAt!.isAfter(now)) {
+          return FutureEventPage(event: event);
+        }
+
         final canOrder =
-            now.isAfter(event.startAt) && now.isBefore(event.endAt);
+            now.isAfter(event.startAt!) && now.isBefore(event.endAt!);
 
         return AppScaffold(
           bottomNavigationBar: canOrder
@@ -112,10 +132,10 @@ class _HomePageState extends State<HomePage> {
                     physics: const NeverScrollableScrollPhysics(),
                     children: [
                       MenuPageView(
-                        title: event.title,
+                        name: event.name,
                         pickupNote: event.pickupNote,
-                        startAt: event.startAt,
-                        endAt: event.endAt,
+                        startAt: event.startAt!,
+                        endAt: event.endAt!,
                       ),
                       CartPageView(key: UniqueKey()),
                       const CustomerProfilePageView(),

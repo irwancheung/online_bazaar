@@ -10,7 +10,6 @@ import 'package:online_bazaar/core/network_info.dart';
 
 import 'package:online_bazaar/core/service_locator/admin_service.dart';
 import 'package:online_bazaar/core/service_locator/customer_service.dart';
-import 'package:online_bazaar/features/shared/presentation/cubit/config_cubit.dart';
 import 'package:screenshot/screenshot.dart';
 
 final sl = GetIt.instance;
@@ -20,9 +19,6 @@ final appText = sl<AppText>();
 Future<void> initServiceLocator() async {
   initAdminService();
   initCustomerService();
-
-  //! Cubit
-  sl.registerFactory(() => ConfigCubit(remoteConfig: sl()));
 
   //! Core
   sl.registerLazySingleton(() => Logger());

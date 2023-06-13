@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:online_bazaar/core/exceptions/app_exception.dart';
 import 'package:online_bazaar/core/exceptions/cart_exception.dart';
@@ -35,7 +37,7 @@ class CustomerCartDataSource {
       final newFoodOrderId = await _firestore.runTransaction(
         (transaction) async {
           final cart = params.cart;
-          final event = params.event;
+          final setting = params.setting;
 
           if (!cart.canCheckout) {
             return null;
@@ -60,6 +62,33 @@ class CustomerCartDataSource {
             }
           }
 
+          int orderNumber = 1;
+
+          final orderNumberPrefix = setting.foodOrder.orderNumberPrefix;
+          final orderNumberPrefixRef =
+              _foodOrderIdPrefixesRef.doc(orderNumberPrefix);
+
+          final orderNumberPrefixDoc =
+              await transaction.get(orderNumberPrefixRef);
+
+          if (!orderNumberPrefixDoc.exists) {
+            transaction.set(
+              orderNumberPrefixRef,
+              {
+                'prefix': orderNumberPrefix,
+                'lastOrderNumber': orderNumber,
+              },
+            );
+          } else {
+            orderNumber =
+                (orderNumberPrefixDoc.data()!['lastOrderNumber'] as int) + 1;
+
+            transaction.update(
+              orderNumberPrefixRef,
+              {'lastOrderNumber': orderNumber},
+            );
+          }
+
           for (final cartItem in cart.items) {
             final item = cartItem.item;
             final itemRef = _itemsRef.doc(item.id);
@@ -74,9 +103,10 @@ class CustomerCartDataSource {
             );
           }
 
-          final foodOrder = FoodOrderModel.fromCartAndEvent(cart, event);
-          final foodOrderDocRef = _foodOrdersRef.doc();
-          final foodOrderId = foodOrderDocRef.id;
+          final foodOrder = FoodOrderModel.fromCartAndSetting(cart, setting);
+          final foodOrderId =
+              '$orderNumberPrefix-${orderNumber.toString().padLeft(3, "0")}';
+          final foodOrderDocRef = _foodOrdersRef.doc(foodOrderId);
 
           transaction.set(
             foodOrderDocRef,
@@ -98,6 +128,7 @@ class CustomerCartDataSource {
       rethrow;
     } catch (e, s) {
       logger.error(e, s);
+      log(e.toString());
       throw const ConvertCartToFoodOrderException();
     }
   }
@@ -107,4 +138,7 @@ class CustomerCartDataSource {
 
   CollectionReference<Map<String, dynamic>> get _foodOrdersRef =>
       _firestore.collection('food_orders');
+
+  CollectionReference<Map<String, dynamic>> get _foodOrderIdPrefixesRef =>
+      _firestore.collection('food_order_id_prefixes');
 }

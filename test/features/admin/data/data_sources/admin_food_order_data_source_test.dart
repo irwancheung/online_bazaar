@@ -60,5 +60,30 @@ void main() {
         expect(result.status, equals(OrderStatus.completed));
       });
     });
+
+    group('updateAdminNote()', () {
+      test('should return FoodOrderModel from Firestore with new admin note.',
+          () async {
+        // Arrange
+        final tOrder = FoodOrderModel.fromMap(
+          jsonDecode(fixture('food_order.json')) as Map<String, dynamic>,
+        );
+
+        final tDocRef =
+            await fakeFirestore.collection('food_orders').add(tOrder.toMap());
+
+        // Act
+        final result = await dataSource.updateAdminNote(
+          UpdateAdminNoteParams(
+            id: tDocRef.id,
+            adminNote: 'Catatan admin.',
+          ),
+        );
+
+        // Assert
+        expect(result, isA<FoodOrderModel>());
+        expect(result.adminNote, equals('Catatan admin.'));
+      });
+    });
   });
 }

@@ -13,6 +13,7 @@ import 'package:online_bazaar/features/shared/data/models/food_order_model.dart'
 import 'package:online_bazaar/features/shared/domain/entities/customer.dart';
 import 'package:online_bazaar/features/shared/domain/entities/event.dart';
 import 'package:online_bazaar/features/shared/domain/entities/food_order.dart';
+import 'package:online_bazaar/features/shared/domain/entities/payment.dart';
 
 import 'admin_food_order_repository_impl_test.mocks.dart';
 
@@ -59,6 +60,40 @@ void main() {
   }
 
   group('AdminFoodOrderRepositoryImpl', () {
+    final tFoodOrderModel = FoodOrderModel(
+      id: 'id',
+      event: Event(
+        name: 'name',
+        pickupNote: 'pickupNote',
+        startAt: DateTime.utc(0),
+        endAt: DateTime.utc(0),
+      ),
+      payment: const Payment(
+        type: PaymentType.bankTransfer,
+        transferTo: 'transferTo',
+        transferNoteFormat: 'transferNoteFormat',
+        sendTransferProofTo: 'sendTransferProofTo',
+      ),
+      customer: const Customer(
+        id: 'id',
+        email: 'email',
+        name: 'name',
+        chaitya: 'chaitya',
+        phone: 'phone',
+        address: 'address',
+      ),
+      type: OrderType.delivery,
+      status: OrderStatus.completed,
+      items: const [],
+      note: 'note',
+      totalQuantity: 0,
+      subTotalPrice: 0,
+      deliveryCharge: 0,
+      additionalCharge: 0,
+      discount: 0,
+      totalPrice: 0,
+    );
+
     group('getFoorOrders()', () {
       test('should return Stream<List<FoodOrder>>', () async {
         // Arrange
@@ -77,36 +112,6 @@ void main() {
     group('updateFoodOrderStatus()', () {
       const tUpdateParams =
           UpdateFoodOrderStatusParams(id: 'id', status: OrderStatus.completed);
-
-      final tFoodOrderModel = FoodOrderModel(
-        id: 'id',
-        event: Event(
-          id: 'id',
-          title: 'title',
-          pickupNote: 'pickupNote',
-          startAt: DateTime.utc(0),
-          endAt: DateTime.utc(0),
-        ),
-        customer: const Customer(
-          id: 'id',
-          email: 'email',
-          name: 'name',
-          chaitya: 'chaitya',
-          phone: 'phone',
-          address: 'address',
-        ),
-        type: OrderType.delivery,
-        paymentType: PaymentType.bankTransfer,
-        status: OrderStatus.completed,
-        items: const [],
-        note: 'note',
-        totalQuantity: 0,
-        subTotalPrice: 0,
-        deliveryCharge: 0,
-        additionalCharge: 0,
-        discount: 0,
-        totalPrice: 0,
-      );
 
       runInternetDisconnectedTests(
         () => repository.updateFoodOrderStatus(tUpdateParams),
@@ -145,6 +150,33 @@ void main() {
           call(tUpdateParams),
           throwsA(isA<UpdateFoodOrderStatusException>()),
         );
+      });
+    });
+
+    group('updateAdminNote()', () {
+      const note = 'adminNote';
+      const tUpdateParams = UpdateAdminNoteParams(
+        id: 'id',
+        adminNote: note,
+      );
+
+      runInternetDisconnectedTests(
+        () => repository.updateAdminNote(tUpdateParams),
+      );
+
+      test('should return FoodOrder when dataSource is successful.', () async {
+        // Arrange
+        setInternetConnected();
+        when(
+          mockDataSource.updateAdminNote(any),
+        ).thenAnswer((_) async => tFoodOrderModel.copyWith(adminNote: note));
+
+        // Act
+        final result = await repository.updateAdminNote(tUpdateParams);
+
+        // Assert
+        verify(mockDataSource.updateAdminNote(tUpdateParams)).called(1);
+        expect(result.adminNote, equals(note));
       });
     });
 

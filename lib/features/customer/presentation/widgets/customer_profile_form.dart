@@ -27,7 +27,7 @@ class _CustomerProfileFormState extends State<CustomerProfileForm> {
 
   final _formKey = GlobalKey<FormBuilderState>();
 
-  Future<void> _submitItem() async {
+  void _updateProfile() {
     if (_formKey.currentState?.saveAndValidate() ?? false) {
       final name = _formKey.currentState!.fields[_nameField]!.value as String;
       final email =
@@ -150,7 +150,7 @@ class _CustomerProfileFormState extends State<CustomerProfileForm> {
 
                   return AppElevatedButton(
                     label: 'Simpan',
-                    onPressed: _submitItem,
+                    onPressed: _updateProfile,
                   );
                 },
               )

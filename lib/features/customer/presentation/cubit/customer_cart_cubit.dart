@@ -81,7 +81,6 @@ class CustomerCartCubit extends HydratedCubit<CustomerCartState> {
 
   Future<void> validateCart() async {
     try {
-      // TODO: need checking
       emit(ValidateCartLoadingState(cart: state.cart));
 
       final cart =

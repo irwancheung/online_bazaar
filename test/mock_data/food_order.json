@@ -11,14 +11,18 @@
     "updatedAt": 1623163200000
   },
   "event": {
-    "id": "1",
-    "title": "Birthday Party",
+    "name": "Birthday Party",
     "pickupNote": "Pick up at 3 AM",
     "startAt": 1623163200000,
     "endAt": 1623163200000
   },
+  "payment": {
+    "type": "cash",
+    "transferTo": "BCA 12345678 a/n John Doe",
+    "transferNoteFormat": "Bazar Online, nama_pemesan, id_pesanan",
+    "sendTransferProofTo": "Admin (08123456789)"
+  },
   "type": "delivery",
-  "paymentType": "cash",
   "status": "paymentPending",
   "deliveryAddress": {
     "id": "1",

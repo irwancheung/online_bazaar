@@ -51,7 +51,7 @@ class AdminSettingCubit extends HydratedCubit<AdminSettingState> {
   @override
   AdminSettingState? fromJson(Map<String, dynamic> json) {
     try {
-      return AdminSettingState(setting: SettingModel.fromMap(json));
+      return AdminSettingState.fromMap(json);
     } catch (_) {
       return null;
     }

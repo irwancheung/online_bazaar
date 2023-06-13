@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:online_bazaar/exports.dart';
 import 'package:online_bazaar/features/admin/presentation/cubit/admin_menu_cubit.dart';
+import 'package:online_bazaar/features/admin/presentation/cubit/admin_setting_cubit.dart';
 import 'package:online_bazaar/features/admin/presentation/widgets/item_card.dart';
 import 'package:online_bazaar/features/admin/presentation/widgets/menu_item_dialog.dart';
 import 'package:online_bazaar/features/shared/domain/entities/menu_item.dart';
@@ -25,6 +26,7 @@ class _MenuPageViewState extends State<MenuPageView>
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<AdminMenuCubit>().getMenuItems();
+      context.read<AdminSettingCubit>().getSetting();
     });
   }
 

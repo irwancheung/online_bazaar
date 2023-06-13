@@ -73,6 +73,30 @@ class MockAdminFoodOrderRepository extends _i1.Mock
         )),
       ) as _i4.Future<_i2.FoodOrder>);
   @override
+  _i4.Future<_i2.FoodOrder> updateAdminNote(
+          _i3.UpdateAdminNoteParams? params) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #updateAdminNote,
+          [params],
+        ),
+        returnValue: _i4.Future<_i2.FoodOrder>.value(_FakeFoodOrder_0(
+          this,
+          Invocation.method(
+            #updateAdminNote,
+            [params],
+          ),
+        )),
+        returnValueForMissingStub:
+            _i4.Future<_i2.FoodOrder>.value(_FakeFoodOrder_0(
+          this,
+          Invocation.method(
+            #updateAdminNote,
+            [params],
+          ),
+        )),
+      ) as _i4.Future<_i2.FoodOrder>);
+  @override
   _i4.Future<void> exportFoodOrdersToSheetFile(
           _i3.ExportFoodOrdersToSheetFileParams? params) =>
       (super.noSuchMethod(

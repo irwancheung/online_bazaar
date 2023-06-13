@@ -4,17 +4,19 @@ import 'package:online_bazaar/features/shared/domain/entities/customer.dart';
 import 'package:online_bazaar/features/shared/domain/entities/delivery_address.dart';
 import 'package:online_bazaar/features/shared/domain/entities/event.dart';
 import 'package:online_bazaar/features/shared/domain/entities/food_order_item.dart';
+import 'package:online_bazaar/features/shared/domain/entities/payment.dart';
 
 class FoodOrder extends Equatable {
   final String id;
   final Event event;
+  final Payment payment;
   final Customer customer;
   final OrderType type;
-  final PaymentType paymentType;
   final OrderStatus status;
   final DeliveryAddress? deliveryAddress;
   final List<FoodOrderItem> items;
   final String note;
+  final String? adminNote;
   final int totalQuantity;
   final int subTotalPrice;
   final int deliveryCharge;
@@ -27,13 +29,14 @@ class FoodOrder extends Equatable {
   const FoodOrder({
     required this.id,
     required this.event,
+    required this.payment,
     required this.customer,
     required this.type,
-    required this.paymentType,
     required this.status,
     this.deliveryAddress,
     required this.items,
     required this.note,
+    this.adminNote,
     required this.totalQuantity,
     required this.subTotalPrice,
     required this.deliveryCharge,
@@ -43,8 +46,6 @@ class FoodOrder extends Equatable {
     this.createdAt,
     this.updatedAt,
   });
-
-  String get orderNumber => '#${id.substring(0, 6).toUpperCase()}';
 
   bool get canUpdateStatus =>
       status != OrderStatus.completed || status != OrderStatus.cancelled;
@@ -68,12 +69,14 @@ class FoodOrder extends Equatable {
   List<Object?> get props => [
         id,
         customer,
+        event,
+        payment,
         type,
-        paymentType,
         status,
         deliveryAddress,
         items,
         note,
+        adminNote,
         totalQuantity,
         subTotalPrice,
         deliveryCharge,

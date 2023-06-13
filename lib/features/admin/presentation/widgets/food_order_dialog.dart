@@ -3,7 +3,9 @@ import 'package:online_bazaar/core/enums/food_order_enum.dart';
 import 'package:online_bazaar/exports.dart';
 import 'package:online_bazaar/features/admin/domain/repositories/admin_food_order_repository.dart';
 import 'package:online_bazaar/features/admin/presentation/cubit/admin_food_order_cubit.dart';
+import 'package:online_bazaar/features/admin/presentation/widgets/admin_note_form.dart';
 import 'package:online_bazaar/features/shared/domain/entities/food_order.dart';
+import 'package:online_bazaar/features/shared/domain/entities/payment.dart';
 import 'package:online_bazaar/features/shared/presentation/widgets/app_small_elevated_button.dart';
 import 'package:online_bazaar/features/shared/presentation/widgets/loading_indicator.dart';
 import 'package:online_bazaar/features/shared/presentation/widgets/order_status_label.dart';
@@ -57,9 +59,6 @@ class _FoodOrderDialogState extends State<FoodOrderDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final event = widget.foodOrder.event;
-
     return Scaffold(
       appBar: const TopBar(),
       body: Padding(
@@ -90,163 +89,18 @@ class _FoodOrderDialogState extends State<FoodOrderDialog> {
                           ],
                         ),
                         20.h.height,
-                        Column(
-                          children: [
-                            appText.header(event.title, color: Colors.black),
-                            appText.smLabel(
-                              '${event.startAt.dMMMy} - ${event.endAt.dMMMy}',
-                              color: theme.hintColor,
-                            ),
-                          ],
-                        ),
-                        15.h.height,
-                        Row(
-                          children: [
-                            appText.caption(
-                              _foodOrder.orderNumber,
-                              color: theme.hintColor,
-                            ),
-                            const Spacer(),
-                            appText.caption(
-                              _foodOrder.createdAt!.dMMMy,
-                              color: theme.hintColor,
-                            ),
-                          ],
-                        ),
+                        HeaderSection(foodOrder: _foodOrder),
+                        const SectionDivider(),
+                        DetailSection(foodOrder: _foodOrder),
                         10.h.height,
-                        Row(
-                          children: [
-                            appText.body(
-                              _foodOrder.customer.name,
-                            ),
-                            const Spacer(),
-                            appText.body(
-                              _foodOrder.customer.chaitya,
-                            ),
-                          ],
-                        ),
-                        Divider(height: 30.h, color: theme.hintColor),
-                        for (final item in _foodOrder.items)
-                          Padding(
-                            padding: EdgeInsets.only(
-                              bottom: item != _foodOrder.items.last ? 10.r : 0,
-                            ),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                  width: 30,
-                                  child: appText.caption('${item.quantity}x'),
-                                ),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      appText.caption(
-                                        item.name,
-                                        fontWeight: FontWeight.w600,
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 2,
-                                      ),
-                                      if (item.variant.isNotEmpty)
-                                        appText.label(
-                                          item.variant,
-                                          color: theme.hintColor,
-                                        ),
-                                    ],
-                                  ),
-                                ),
-                                20.w.width,
-                                appText.label(item.price.toCurrencyFormat()),
-                              ],
-                            ),
-                          ),
-                        30.h.height,
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            appText.body('Total', fontWeight: FontWeight.w600),
-                            appText.body(
-                              _foodOrder.totalPrice.toCurrencyFormat(),
-                            ),
-                          ],
-                        ),
-                        Divider(height: 30.h, color: theme.hintColor),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            appText.caption(
-                              'Pembayaran',
-                              fontWeight: FontWeight.w600,
-                            ),
-                            appText.caption(
-                              _foodOrder.paymentType == PaymentType.bankTransfer
-                                  ? 'Bank Transfer'
-                                  : 'Tunai',
-                            ),
-                          ],
-                        ),
+                        NoteSection(foodOrder: _foodOrder),
+                        const SectionDivider(),
+                        PaymentSection(payment: _foodOrder.payment),
                         10.h.height,
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            appText.caption(
-                              'Pengiriman',
-                              fontWeight: FontWeight.w600,
-                            ),
-                            appText.caption(
-                              _foodOrder.type == OrderType.delivery
-                                  ? 'Antar ke alamat'
-                                  : 'Ambil di tempat',
-                            ),
-                          ],
-                        ),
-                        10.h.height,
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            appText.caption(
-                              'Catatan',
-                              fontWeight: FontWeight.w600,
-                            ),
-                            20.w.width,
-                            Expanded(
-                              child: appText.caption(
-                                _foodOrder.note.isNotEmpty
-                                    ? _foodOrder.note
-                                    : '-',
-                                textAlign: TextAlign.end,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Divider(height: 30.h, color: theme.hintColor),
-                        if (_foodOrder.type == OrderType.delivery)
-                          SizedBox(
-                            width: double.infinity,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                appText.caption(
-                                  'Alamat Pengiriman',
-                                  fontWeight: FontWeight.w600,
-                                ),
-                                10.h.height,
-                                appText.caption(
-                                  _foodOrder.deliveryAddress!.name,
-                                ),
-                                appText.caption(
-                                  _foodOrder.deliveryAddress!.phone,
-                                ),
-                                appText.caption(
-                                  _foodOrder.deliveryAddress!.address,
-                                ),
-                              ],
-                            ),
-                          ),
+                        DeliverySection(foodOrder: _foodOrder),
+                        const SectionDivider(),
+                        AdminNoteForm(foodOrder: _foodOrder),
+                        5.h.height,
                       ],
                     ),
                   ),
@@ -300,6 +154,216 @@ class _FoodOrderDialogState extends State<FoodOrderDialog> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class SectionDivider extends StatelessWidget {
+  const SectionDivider({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Divider(height: 20);
+  }
+}
+
+class HeaderSection extends StatelessWidget {
+  final FoodOrder foodOrder;
+  const HeaderSection({super.key, required this.foodOrder});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final event = foodOrder.event;
+    return Column(
+      children: [
+        appText.header(
+          event.name,
+          color: Colors.black,
+          textAlign: TextAlign.center,
+        ),
+        5.h.height,
+        appText.smLabel(
+          '${event.startAt.dMMMy} - ${event.endAt.subtract(const Duration(days: 1)).dMMMy}',
+          color: theme.hintColor,
+          textAlign: TextAlign.center,
+        ),
+        20.h.height,
+        Row(
+          children: [
+            appText.caption(
+              'ID: ${foodOrder.id}',
+              color: theme.hintColor,
+            ),
+            const Spacer(),
+            appText.caption(
+              foodOrder.createdAt!.dMMMy,
+              color: theme.hintColor,
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class DetailSection extends StatelessWidget {
+  final FoodOrder foodOrder;
+  const DetailSection({super.key, required this.foodOrder});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Column(
+      children: [
+        for (final item in foodOrder.items)
+          Padding(
+            padding: EdgeInsets.only(
+              bottom: item != foodOrder.items.last ? 10.r : 0,
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  width: 30.w,
+                  child: appText.caption('${item.quantity}x'),
+                ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      appText.caption(
+                        item.name,
+                        fontWeight: FontWeight.w600,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                      ),
+                      if (item.variant.isNotEmpty)
+                        appText.label(
+                          item.variant,
+                          color: theme.hintColor,
+                        ),
+                    ],
+                  ),
+                ),
+                20.w.width,
+                appText.label(item.price.toCurrencyFormat()),
+              ],
+            ),
+          ),
+        20.h.height,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            appText.body('Total', fontWeight: FontWeight.w600),
+            appText.body(foodOrder.totalPrice.toCurrencyFormat()),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class NoteSection extends StatelessWidget {
+  final FoodOrder foodOrder;
+  const NoteSection({super.key, required this.foodOrder});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        appText.caption('Catatan', fontWeight: FontWeight.w600),
+        20.w.width,
+        Expanded(
+          child: appText.caption(
+            foodOrder.note.isNotEmpty ? foodOrder.note : '-',
+            textAlign: TextAlign.end,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class DeliverySection extends StatelessWidget {
+  final FoodOrder foodOrder;
+  const DeliverySection({super.key, required this.foodOrder});
+
+  @override
+  Widget build(BuildContext context) {
+    final event = foodOrder.event;
+    final deliveryAddress = foodOrder.deliveryAddress;
+
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            appText.caption(
+              'Pengiriman',
+              fontWeight: FontWeight.w600,
+            ),
+            appText.caption(
+              foodOrder.type == OrderType.pickup
+                  ? 'Ambil di tempat'
+                  : 'Antar ke alamat',
+            ),
+          ],
+        ),
+        10.h.height,
+        if (foodOrder.type == OrderType.pickup)
+          appText.label(event.pickupNote)
+        else
+          SizedBox(
+            width: double.infinity,
+            child: Column(
+              children: [
+                appText.label(
+                  deliveryAddress!.name,
+                  fontWeight: FontWeight.w600,
+                ),
+                appText.label(
+                  deliveryAddress.phone,
+                  fontWeight: FontWeight.w600,
+                ),
+                appText.label(
+                  deliveryAddress.address,
+                  fontWeight: FontWeight.w600,
+                ),
+              ],
+            ),
+          ),
+      ],
+    );
+  }
+}
+
+class PaymentSection extends StatelessWidget {
+  final Payment payment;
+  const PaymentSection({super.key, required this.payment});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            appText.caption(
+              'Pembayaran',
+              fontWeight: FontWeight.w600,
+            ),
+            appText.caption(
+              payment.type == PaymentType.bankTransfer
+                  ? 'Bank Transfer'
+                  : 'Tunai',
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

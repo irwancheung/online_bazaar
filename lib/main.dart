@@ -19,7 +19,7 @@ import 'package:online_bazaar/features/customer/presentation/cubit/customer_cart
 import 'package:online_bazaar/features/customer/presentation/cubit/customer_cubit.dart';
 import 'package:online_bazaar/features/customer/presentation/cubit/customer_food_order_cubit.dart';
 import 'package:online_bazaar/features/customer/presentation/cubit/customer_menu_cubit.dart';
-import 'package:online_bazaar/features/shared/presentation/cubit/config_cubit.dart';
+import 'package:online_bazaar/features/customer/presentation/cubit/customer_setting_cubit.dart';
 import 'package:online_bazaar/features/shared/presentation/theme.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -71,7 +71,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => sl<ConfigCubit>()),
         if (const String.fromEnvironment('USER_TYPE') == 'admin') ...[
           BlocProvider(create: (context) => sl<AdminAuthCubit>()),
           BlocProvider(create: (context) => sl<AdminMenuCubit>()),
@@ -82,6 +81,7 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (context) => sl<CustomerMenuCubit>()),
           BlocProvider(create: (context) => sl<CustomerCartCubit>()),
           BlocProvider(create: (context) => sl<CustomerFoodOrderCubit>()),
+          BlocProvider(create: (context) => sl<CustomerSettingCubit>()),
         ],
       ],
       child: ScreenUtilInit(

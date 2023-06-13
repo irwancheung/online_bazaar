@@ -5,6 +5,7 @@ import 'package:online_bazaar/features/shared/domain/entities/food_order.dart';
 abstract class AdminFoodOrderRepository {
   Stream<List<FoodOrder>> getFoodOrders();
   Future<FoodOrder> updateFoodOrderStatus(UpdateFoodOrderStatusParams params);
+  Future<FoodOrder> updateAdminNote(UpdateAdminNoteParams params);
   Future<void> exportFoodOrdersToSheetFile(
     ExportFoodOrdersToSheetFileParams params,
   );
@@ -21,6 +22,19 @@ class UpdateFoodOrderStatusParams extends Equatable {
 
   @override
   List<Object?> get props => [id, status];
+}
+
+class UpdateAdminNoteParams extends Equatable {
+  final String id;
+  final String adminNote;
+
+  const UpdateAdminNoteParams({
+    required this.id,
+    required this.adminNote,
+  });
+
+  @override
+  List<Object?> get props => [id, adminNote];
 }
 
 class ExportFoodOrdersToSheetFileParams extends Equatable {

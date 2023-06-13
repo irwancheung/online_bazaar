@@ -22,13 +22,16 @@ class CustomerFoodOrderRepositoryImpl implements CustomerFoodOrderRepository {
     DownloadFoodOrderReceiptParams params,
   ) async {
     try {
-      logger.debug('Downloading food order receipt');
-
-      final image = await _screenshotController.captureFromWidget(
+      final image = await _screenshotController.captureFromLongWidget(
         FoodOrderReceipt(foodOrder: params.foodOrder),
+        pixelRatio: 2,
+        constraints: const BoxConstraints(
+          maxWidth: 400,
+          minHeight: 400,
+        ),
       );
 
-      final fileName = 'struk_bazar_online_${params.foodOrder.orderNumber}.png';
+      final fileName = 'struk_bazar_online_${params.foodOrder.id}.png';
 
       if (kIsWeb) {
         final content = base64Encode(image);

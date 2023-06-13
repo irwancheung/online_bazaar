@@ -7,23 +7,27 @@ import 'package:online_bazaar/features/shared/data/models/customer_model.dart';
 import 'package:online_bazaar/features/shared/data/models/delivery_address_model.dart';
 import 'package:online_bazaar/features/shared/data/models/event_model.dart';
 import 'package:online_bazaar/features/shared/data/models/food_order_item_model.dart';
+import 'package:online_bazaar/features/shared/data/models/payment_model.dart';
 import 'package:online_bazaar/features/shared/domain/entities/customer.dart';
 import 'package:online_bazaar/features/shared/domain/entities/delivery_address.dart';
 import 'package:online_bazaar/features/shared/domain/entities/event.dart';
 import 'package:online_bazaar/features/shared/domain/entities/food_order.dart';
 import 'package:online_bazaar/features/shared/domain/entities/food_order_item.dart';
+import 'package:online_bazaar/features/shared/domain/entities/payment.dart';
+import 'package:online_bazaar/features/shared/domain/entities/setting.dart';
 
 class FoodOrderModel extends FoodOrder {
   const FoodOrderModel({
     required super.id,
     required super.event,
+    required super.payment,
     required super.customer,
     required super.type,
-    required super.paymentType,
     required super.status,
     super.deliveryAddress,
     required super.items,
     required super.note,
+    super.adminNote,
     required super.totalQuantity,
     required super.subTotalPrice,
     required super.deliveryCharge,
@@ -38,15 +42,16 @@ class FoodOrderModel extends FoodOrder {
     return FoodOrderModel(
       id: order.id,
       event: order.event,
+      payment: order.payment,
       customer: CustomerModel.fromEntity(order.customer),
       type: order.type,
-      paymentType: order.paymentType,
       status: order.status,
       deliveryAddress: order.deliveryAddress,
       items: order.items
           .map((item) => FoodOrderItemModel.fromEntity(item))
           .toList(),
       note: order.note,
+      adminNote: order.adminNote,
       totalQuantity: order.totalQuantity,
       subTotalPrice: order.subTotalPrice,
       deliveryCharge: order.deliveryCharge,
@@ -58,15 +63,20 @@ class FoodOrderModel extends FoodOrder {
     );
   }
 
-  factory FoodOrderModel.fromCartAndEvent(Cart cart, Event event) {
+  factory FoodOrderModel.fromCartAndSetting(Cart cart, Setting setting) {
     final now = DateTime.now();
 
     return FoodOrderModel(
       id: now.millisecondsSinceEpoch.toString(),
-      event: event,
+      event: EventModel.fromEventSetting(setting.event),
+      payment: Payment(
+        type: cart.paymentType,
+        transferTo: setting.payment.transferTo,
+        transferNoteFormat: setting.payment.transferNoteFormat,
+        sendTransferProofTo: setting.payment.sendTransferProofTo,
+      ),
       customer: cart.customer!,
       type: cart.orderType,
-      paymentType: cart.paymentType,
       status: OrderStatus.paymentPending,
       deliveryAddress: cart.deliveryAddress,
       items: cart.items
@@ -86,6 +96,7 @@ class FoodOrderModel extends FoodOrder {
   FoodOrderModel copyWith({
     String? id,
     Event? event,
+    Payment? payment,
     Customer? customer,
     OrderType? type,
     PaymentType? paymentType,
@@ -93,6 +104,7 @@ class FoodOrderModel extends FoodOrder {
     DeliveryAddress? deliveryAddress,
     List<FoodOrderItem>? items,
     String? note,
+    String? adminNote,
     int? totalQuantity,
     int? subTotalPrice,
     int? deliveryCharge,
@@ -105,13 +117,14 @@ class FoodOrderModel extends FoodOrder {
     return FoodOrderModel(
       id: id ?? this.id,
       event: event ?? this.event,
+      payment: payment ?? this.payment,
       customer: customer ?? this.customer,
       type: type ?? this.type,
-      paymentType: paymentType ?? this.paymentType,
       status: status ?? this.status,
       deliveryAddress: deliveryAddress ?? this.deliveryAddress,
       items: items ?? this.items,
       note: note ?? this.note,
+      adminNote: adminNote ?? this.adminNote,
       totalQuantity: totalQuantity ?? this.totalQuantity,
       subTotalPrice: subTotalPrice ?? this.subTotalPrice,
       deliveryCharge: deliveryCharge ?? this.deliveryCharge,
@@ -127,9 +140,9 @@ class FoodOrderModel extends FoodOrder {
     return <String, dynamic>{
       'id': id,
       'event': EventModel.fromEntity(event).toMap(),
+      'payment': PaymentModel.fromEntity(payment).toMap(),
       'customer': CustomerModel.fromEntity(customer).toMap(),
       'type': type.name,
-      'paymentType': paymentType.name,
       'status': status.name,
       'deliveryAddress': deliveryAddress != null
           ? DeliveryAddressModel.fromEntity(deliveryAddress!).toMap()
@@ -138,6 +151,7 @@ class FoodOrderModel extends FoodOrder {
           .map((item) => FoodOrderItemModel.fromEntity(item).toMap())
           .toList(),
       'note': note,
+      'adminNote': adminNote,
       'totalQuantity': totalQuantity,
       'subTotalPrice': subTotalPrice,
       'deliveryCharge': deliveryCharge,
@@ -153,9 +167,9 @@ class FoodOrderModel extends FoodOrder {
     return FoodOrderModel(
       id: map['id'] as String,
       event: EventModel.fromMap(map['event'] as Map<String, dynamic>),
+      payment: PaymentModel.fromMap(map['payment'] as Map<String, dynamic>),
       customer: CustomerModel.fromMap(map['customer'] as Map<String, dynamic>),
       type: (map['type'] as String).toOrderTypeEnum(),
-      paymentType: (map['paymentType'] as String).toPaymentTypeEnum(),
       status: (map['status'] as String).toOrderStatusEnum(),
       deliveryAddress: map['deliveryAddress'] != null
           ? DeliveryAddressModel.fromMap(
@@ -168,6 +182,7 @@ class FoodOrderModel extends FoodOrder {
         ),
       ),
       note: map['note'] as String,
+      adminNote: map['adminNote'] as String?,
       totalQuantity: map['totalQuantity'] as int,
       subTotalPrice: map['subTotalPrice'] as int,
       deliveryCharge: map['deliveryCharge'] as int,

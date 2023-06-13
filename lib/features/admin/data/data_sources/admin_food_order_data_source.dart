@@ -80,6 +80,21 @@ class AdminFoodOrderDataSource {
     }
   }
 
+  Future<FoodOrderModel> updateAdminNote(UpdateAdminNoteParams params) async {
+    try {
+      await _foodOrdersRef.doc(params.id).update({
+        'adminNote': params.adminNote,
+        'updatedAt': DateTime.now().millisecondsSinceEpoch,
+      });
+
+      final newOrderSnapshot = await _foodOrdersRef.doc(params.id).get();
+      return FoodOrderModel.fromMap(newOrderSnapshot.data()!);
+    } catch (e, s) {
+      logger.error(e, s);
+      throw const UpdateAdminNoteException();
+    }
+  }
+
   CollectionReference<Map<String, dynamic>> get _itemsRef =>
       _firestore.collection('menu_items');
 

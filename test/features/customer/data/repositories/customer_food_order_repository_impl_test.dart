@@ -7,6 +7,7 @@ import 'package:online_bazaar/features/customer/domain/repositories/customer_foo
 import 'package:online_bazaar/features/shared/domain/entities/customer.dart';
 import 'package:online_bazaar/features/shared/domain/entities/event.dart';
 import 'package:online_bazaar/features/shared/domain/entities/food_order.dart';
+import 'package:online_bazaar/features/shared/domain/entities/payment.dart';
 import 'package:screenshot/screenshot.dart';
 
 import '../../../../helpers.dart';
@@ -38,11 +39,16 @@ void main() {
           foodOrder: FoodOrder(
             id: 'Mg1tQWz3ypghckwta4RM',
             event: Event(
-              id: 'id',
-              title: 'title',
+              name: 'name',
               pickupNote: 'pickupNote',
               startAt: DateTime.utc(0),
               endAt: DateTime.utc(0),
+            ),
+            payment: const Payment(
+              type: PaymentType.bankTransfer,
+              transferTo: 'transferTo',
+              transferNoteFormat: 'transferNoteFormat',
+              sendTransferProofTo: 'sendTransferProofTo',
             ),
             customer: const Customer(
               id: 'id',
@@ -53,7 +59,6 @@ void main() {
               address: 'address',
             ),
             type: OrderType.pickup,
-            paymentType: PaymentType.bankTransfer,
             status: OrderStatus.paymentPending,
             items: const [],
             note: 'note',

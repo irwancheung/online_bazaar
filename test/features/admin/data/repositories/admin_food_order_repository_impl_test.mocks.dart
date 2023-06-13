@@ -109,6 +109,30 @@ class MockAdminFoodOrderDataSource extends _i1.Mock
           ),
         )),
       ) as _i5.Future<_i2.FoodOrderModel>);
+  @override
+  _i5.Future<_i2.FoodOrderModel> updateAdminNote(
+          _i7.UpdateAdminNoteParams? params) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #updateAdminNote,
+          [params],
+        ),
+        returnValue: _i5.Future<_i2.FoodOrderModel>.value(_FakeFoodOrderModel_0(
+          this,
+          Invocation.method(
+            #updateAdminNote,
+            [params],
+          ),
+        )),
+        returnValueForMissingStub:
+            _i5.Future<_i2.FoodOrderModel>.value(_FakeFoodOrderModel_0(
+          this,
+          Invocation.method(
+            #updateAdminNote,
+            [params],
+          ),
+        )),
+      ) as _i5.Future<_i2.FoodOrderModel>);
 }
 
 /// A class which mocks [SheetGenerator].

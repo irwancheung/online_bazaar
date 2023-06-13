@@ -8,6 +8,7 @@ import 'package:online_bazaar/exports.dart';
 import 'package:online_bazaar/features/admin/data/data_sources/admin_food_order_data_source.dart';
 import 'package:online_bazaar/features/admin/domain/repositories/admin_food_order_repository.dart';
 import 'package:online_bazaar/features/shared/data/models/food_order_model.dart';
+import 'package:online_bazaar/features/shared/domain/entities/food_order.dart';
 
 class AdminFoodOrderRepositoryImpl implements AdminFoodOrderRepository {
   final NetworkInfo _networkInfo;
@@ -46,11 +47,29 @@ class AdminFoodOrderRepositoryImpl implements AdminFoodOrderRepository {
   }
 
   @override
+  Future<FoodOrder> updateAdminNote(UpdateAdminNoteParams params) async {
+    try {
+      await _networkInfo.checkConnection();
+
+      return await _dataSource.updateAdminNote(params);
+    } catch (e, s) {
+      if (e is AppException) {
+        rethrow;
+      }
+
+      logger.error(e, s);
+      throw const UpdateAdminNoteException();
+    }
+  }
+
+  @override
   Future<void> exportFoodOrdersToSheetFile(
     ExportFoodOrdersToSheetFileParams params,
   ) async {
     try {
       //TODO: need refactor
+      final foodOrdersAsc = params.foodOrders.reversed;
+
       const ordersSummary = 'Ringkasan Pesanan';
       const ordersDetail = 'Rincian Pesanan';
 
@@ -70,7 +89,8 @@ class AdminFoodOrderRepositoryImpl implements AdminFoodOrderRepository {
         'Alamat Pengiriman',
         'Catatan',
         'Jumlah Item',
-        'Total'
+        'Total',
+        'Catatan Admin',
       ];
       ordersSummarySheet.appendRow(ordersSummaryCols);
 
@@ -111,14 +131,14 @@ class AdminFoodOrderRepositoryImpl implements AdminFoodOrderRepository {
       int ordersSummaryRowIndex = 2;
       int ordersDetailRowIndex = 2;
 
-      for (final order in params.foodOrders) {
+      for (final order in foodOrdersAsc) {
         final deliveryAddress = order.deliveryAddress;
         final deliverTo = deliveryAddress != null
             ? '${deliveryAddress.name}\n${deliveryAddress.phone}\n${deliveryAddress.address}'
             : '';
 
         ordersSummarySheet.appendRow([
-          order.orderNumber,
+          order.id,
           order.createdAt!.dMMMy,
           order.statusText,
           order.customer.name,
@@ -132,6 +152,7 @@ class AdminFoodOrderRepositoryImpl implements AdminFoodOrderRepository {
           order.note,
           order.totalQuantity,
           order.totalPrice.toCurrencyFormat(),
+          order.adminNote ?? '',
         ]);
 
         for (var i = 0; i < ordersSummaryCols.length; i++) {
@@ -156,7 +177,7 @@ class AdminFoodOrderRepositoryImpl implements AdminFoodOrderRepository {
 
         for (final items in order.items) {
           ordersDetailSheet.appendRow([
-            order.orderNumber,
+            order.id,
             items.name,
             items.variant,
             items.quantity,

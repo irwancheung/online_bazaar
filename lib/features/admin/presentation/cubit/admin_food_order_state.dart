@@ -78,6 +78,26 @@ class UpdateFoodOrderStatusFailureState extends AdminFoodOrderState {
   });
 }
 
+class UpdateAdminNoteLoadingState extends AdminFoodOrderState {
+  const UpdateAdminNoteLoadingState({required super.foodOrders});
+}
+
+class UpdateAdminNoteSuccessState extends AdminFoodOrderState {
+  final FoodOrder foodOrder;
+
+  const UpdateAdminNoteSuccessState({
+    required this.foodOrder,
+    required super.foodOrders,
+  });
+}
+
+class UpdateAdminNoteFailureState extends AdminFoodOrderState {
+  const UpdateAdminNoteFailureState({
+    required super.foodOrders,
+    required super.errorMessage,
+  });
+}
+
 class ExportFoodOrdersToSheetFileLoadingState extends AdminFoodOrderState {
   const ExportFoodOrdersToSheetFileLoadingState({required super.foodOrders});
 }

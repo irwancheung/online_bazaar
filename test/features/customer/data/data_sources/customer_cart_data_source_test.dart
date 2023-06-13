@@ -10,7 +10,10 @@ import 'package:online_bazaar/features/customer/domain/repositories/customer_car
 import 'package:online_bazaar/features/shared/data/models/food_order_model.dart';
 import 'package:online_bazaar/features/shared/data/models/menu_item_model.dart';
 import 'package:online_bazaar/features/shared/domain/entities/customer.dart';
-import 'package:online_bazaar/features/shared/domain/entities/event.dart';
+import 'package:online_bazaar/features/shared/domain/entities/event_setting.dart';
+import 'package:online_bazaar/features/shared/domain/entities/food_order_setting.dart';
+import 'package:online_bazaar/features/shared/domain/entities/payment_setting.dart';
+import 'package:online_bazaar/features/shared/domain/entities/setting.dart';
 
 import '../../../../helpers.dart';
 
@@ -48,12 +51,21 @@ void main() {
             jsonDecode(fixture('menu_item.json')) as Map<String, dynamic>;
         final tItem = MenuItemModel.fromMap(tItemMap);
 
-        final tEvent = Event(
+        final tSetting = Setting(
           id: 'id',
-          title: 'title',
-          pickupNote: 'pickupNote',
-          startAt: DateTime.utc(0),
-          endAt: DateTime.utc(0),
+          event: EventSetting(
+            name: 'name',
+            pickupNote: 'pickupNote',
+            startAt: DateTime.utc(0),
+            endAt: DateTime.utc(0),
+          ),
+          foodOrder:
+              const FoodOrderSetting(orderNumberPrefix: 'orderNumberPrefix'),
+          payment: const PaymentSetting(
+            transferTo: 'transferTo',
+            transferNoteFormat: 'transferNoteFormat',
+            sendTransferProofTo: 'sendTransferProofTo',
+          ),
         );
 
         final tDocRef =
@@ -95,7 +107,7 @@ void main() {
           orderType: OrderType.pickup,
           paymentType: PaymentType.bankTransfer,
           note: 'note',
-          event: tEvent,
+          setting: tSetting,
         );
 
         // Act

@@ -7,10 +7,15 @@ import 'package:online_bazaar/core/exceptions/cart_exception.dart';
 import 'package:online_bazaar/features/customer/data/models/cart_model.dart';
 import 'package:online_bazaar/features/customer/domain/repositories/customer_cart_repository.dart';
 import 'package:online_bazaar/features/customer/presentation/cubit/customer_cart_cubit.dart';
+import 'package:online_bazaar/features/shared/data/models/event_model.dart';
 import 'package:online_bazaar/features/shared/domain/entities/customer.dart';
-import 'package:online_bazaar/features/shared/domain/entities/event.dart';
+import 'package:online_bazaar/features/shared/domain/entities/event_setting.dart';
 import 'package:online_bazaar/features/shared/domain/entities/food_order.dart';
+import 'package:online_bazaar/features/shared/domain/entities/food_order_setting.dart';
 import 'package:online_bazaar/features/shared/domain/entities/menu_item.dart';
+import 'package:online_bazaar/features/shared/domain/entities/payment.dart';
+import 'package:online_bazaar/features/shared/domain/entities/payment_setting.dart';
+import 'package:online_bazaar/features/shared/domain/entities/setting.dart';
 
 import '../../../../helpers.dart';
 import 'customer_cart_cubit_test.mocks.dart';
@@ -290,12 +295,21 @@ void main() {
     });
 
     group('completeCheckout()', () {
-      final tEvent = Event(
+      final tSetting = Setting(
         id: 'id',
-        title: 'title',
-        pickupNote: 'pickupNote',
-        startAt: DateTime.utc(0),
-        endAt: DateTime.utc(0),
+        event: EventSetting(
+          name: 'name',
+          pickupNote: 'pickupNote',
+          startAt: DateTime.utc(0),
+          endAt: DateTime.utc(0),
+        ),
+        foodOrder:
+            const FoodOrderSetting(orderNumberPrefix: 'orderNumberPrefix'),
+        payment: const PaymentSetting(
+          transferTo: 'transferTo',
+          transferNoteFormat: 'transferNoteFormat',
+          sendTransferProofTo: 'sendTransferProofTo',
+        ),
       );
 
       final tCompleteCheckoutParams = CompleteCheckoutParams(
@@ -303,15 +317,20 @@ void main() {
         orderType: OrderType.pickup,
         paymentType: PaymentType.cash,
         note: '',
-        event: tEvent,
+        setting: tSetting,
       );
 
       final tFoodOrder = FoodOrder(
         id: 'id',
-        event: tEvent,
+        event: EventModel.fromEventSetting(tSetting.event),
+        payment: Payment(
+          type: tCompleteCheckoutParams.paymentType,
+          transferTo: tSetting.payment.transferTo,
+          transferNoteFormat: tSetting.payment.transferNoteFormat,
+          sendTransferProofTo: tSetting.payment.sendTransferProofTo,
+        ),
         customer: tCustomer,
         type: OrderType.pickup,
-        paymentType: PaymentType.cash,
         status: OrderStatus.paymentPending,
         items: const [],
         note: '',

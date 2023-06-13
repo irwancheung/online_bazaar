@@ -6,6 +6,12 @@ class UpdateFoodOrderStatusException extends AppException {
   ]);
 }
 
+class UpdateAdminNoteException extends AppException {
+  const UpdateAdminNoteException([
+    super.message = 'Gagal memperbarui catatan admin.',
+  ]);
+}
+
 class DownloadFoodOrderReceiptException extends AppException {
   const DownloadFoodOrderReceiptException([
     super.message = 'Gagal membuat struk pesanan.',

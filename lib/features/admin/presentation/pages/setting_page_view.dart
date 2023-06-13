@@ -18,14 +18,6 @@ class _SettingPageViewState extends State<SettingPageView>
   bool get wantKeepAlive => true;
 
   @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<AdminSettingCubit>().getSetting();
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     super.build(context);
 
@@ -36,7 +28,7 @@ class _SettingPageViewState extends State<SettingPageView>
           builder: (context, state) {
             final setting = state.setting;
 
-            return SettingForm(key: UniqueKey(), setting: setting);
+            return SettingForm(setting: setting);
           },
         ),
       ),

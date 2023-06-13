@@ -16,8 +16,11 @@ import 'package:online_bazaar/features/customer/domain/repositories/customer_car
 import 'package:online_bazaar/features/shared/data/models/food_order_model.dart';
 import 'package:online_bazaar/features/shared/data/models/menu_item_model.dart';
 import 'package:online_bazaar/features/shared/domain/entities/customer.dart';
-import 'package:online_bazaar/features/shared/domain/entities/event.dart';
+import 'package:online_bazaar/features/shared/domain/entities/event_setting.dart';
+import 'package:online_bazaar/features/shared/domain/entities/food_order_setting.dart';
 import 'package:online_bazaar/features/shared/domain/entities/menu_item.dart';
+import 'package:online_bazaar/features/shared/domain/entities/payment_setting.dart';
+import 'package:online_bazaar/features/shared/domain/entities/setting.dart';
 
 import '../../../../helpers.dart';
 import 'customer_cart_repository_impl_test.mocks.dart';
@@ -315,12 +318,21 @@ void main() {
         ],
       );
 
-      final tEvent = Event(
+      final tSetting = Setting(
         id: 'id',
-        title: 'title',
-        pickupNote: 'pickupNote',
-        startAt: DateTime.utc(0),
-        endAt: DateTime.utc(0),
+        event: EventSetting(
+          name: 'name',
+          pickupNote: 'pickupNote',
+          startAt: DateTime.utc(0),
+          endAt: DateTime.now().add(const Duration(days: 1)),
+        ),
+        foodOrder:
+            const FoodOrderSetting(orderNumberPrefix: 'orderNumberPrefix'),
+        payment: const PaymentSetting(
+          transferTo: 'transferTo',
+          transferNoteFormat: 'transferNoteFormat',
+          sendTransferProofTo: 'sendTransferProofTo',
+        ),
       );
 
       final tCompleteCheckoutParams = CompleteCheckoutParams(
@@ -328,10 +340,10 @@ void main() {
         orderType: OrderType.pickup,
         paymentType: PaymentType.cash,
         note: '',
-        event: tEvent,
+        setting: tSetting,
       );
 
-      final tFoodOrder = FoodOrderModel.fromCartAndEvent(tCart, tEvent);
+      final tFoodOrder = FoodOrderModel.fromCartAndSetting(tCart, tSetting);
 
       test('should return FoodOrder where properties value is same as Cart.',
           () async {

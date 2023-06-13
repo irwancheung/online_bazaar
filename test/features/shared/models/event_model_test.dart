@@ -7,8 +7,7 @@ void main() {
     test('should be a subclass of Event entity.', () {
       // Arrange
       final tEventModel = EventModel(
-        id: 'id',
-        title: 'title',
+        name: 'name',
         pickupNote: 'pickupNote',
         startAt: DateTime.utc(0),
         endAt: DateTime.utc(0),

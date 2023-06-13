@@ -6,14 +6,14 @@ import 'package:online_bazaar/features/shared/domain/entities/menu_item.dart';
 import 'package:online_bazaar/features/shared/presentation/widgets/background_container.dart';
 
 class MenuPageView extends StatefulWidget {
-  final String title;
+  final String name;
   final String pickupNote;
   final DateTime startAt;
   final DateTime endAt;
 
   const MenuPageView({
     super.key,
-    required this.title,
+    required this.name,
     required this.pickupNote,
     required this.startAt,
     required this.endAt,
@@ -47,25 +47,32 @@ class _MenuPageViewState extends State<MenuPageView>
         children: [
           Expanded(
             flex: 2,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox.square(
-                  dimension: 100.r,
-                  child: Image.asset('assets/icons/app_logo.png'),
-                ),
-                20.h.height,
-                appText.xl(widget.title, fontWeight: FontWeight.w600),
-                5.h.height,
-                appText.caption(
-                  'Periode ${widget.startAt.dMMMy} - ${widget.endAt.dMMMy}',
-                ),
-                5.h.height,
-                appText.label(
-                  widget.pickupNote,
-                  textAlign: TextAlign.center,
-                ),
-              ],
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.r),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox.square(
+                    dimension: 100.r,
+                    child: Image.asset('assets/icons/app_logo.png'),
+                  ),
+                  20.h.height,
+                  appText.xl(
+                    widget.name,
+                    fontWeight: FontWeight.w600,
+                    textAlign: TextAlign.center,
+                  ),
+                  5.h.height,
+                  appText.caption(
+                    '${widget.startAt.dMMMy} - ${widget.endAt.subtract(const Duration(seconds: 1)).dMMMy}',
+                  ),
+                  10.h.height,
+                  appText.label(
+                    'Note:\n${widget.pickupNote}',
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
             ),
           ),
           Expanded(

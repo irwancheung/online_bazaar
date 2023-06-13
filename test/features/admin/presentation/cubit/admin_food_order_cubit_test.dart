@@ -9,6 +9,7 @@ import 'package:online_bazaar/features/admin/presentation/cubit/admin_food_order
 import 'package:online_bazaar/features/shared/domain/entities/customer.dart';
 import 'package:online_bazaar/features/shared/domain/entities/event.dart';
 import 'package:online_bazaar/features/shared/domain/entities/food_order.dart';
+import 'package:online_bazaar/features/shared/domain/entities/payment.dart';
 
 import '../../../../helpers.dart';
 import 'admin_food_order_cubit_test.mocks.dart';
@@ -29,11 +30,16 @@ void main() {
     final tFoodOrder = FoodOrder(
       id: 'id',
       event: Event(
-        id: 'id',
-        title: 'title',
+        name: 'name',
         pickupNote: 'pickupNote',
         startAt: DateTime.utc(0),
         endAt: DateTime.utc(0),
+      ),
+      payment: const Payment(
+        type: PaymentType.bankTransfer,
+        transferTo: 'transferTo',
+        transferNoteFormat: 'transferNoteFormat',
+        sendTransferProofTo: 'sendTransferProofTo',
       ),
       customer: const Customer(
         id: 'id',
@@ -44,7 +50,6 @@ void main() {
         address: 'address',
       ),
       type: OrderType.delivery,
-      paymentType: PaymentType.bankTransfer,
       status: OrderStatus.completed,
       items: const [],
       note: 'note',
@@ -191,6 +196,62 @@ void main() {
         expect: () => <AdminFoodOrderState>[
           const ExportFoodOrdersToSheetFileLoadingState(foodOrders: []),
           const ExportFoodOrdersToSheetFileFailureState(
+            foodOrders: [],
+            errorMessage: '',
+          ),
+        ],
+      );
+    });
+
+    group('updateAdminNote()', () {
+      const note = 'note';
+      const tUpdateParams = UpdateAdminNoteParams(
+        id: 'id',
+        adminNote: note,
+      );
+
+      test('should call repository.updateAdminNote() once.', () async {
+        // Arrange
+        when(mockRepository.updateAdminNote(any))
+            .thenAnswer((_) async => tFoodOrder);
+
+        // Act
+        cubit.updateAdminNote(tUpdateParams);
+        await untilCalled(mockRepository.updateAdminNote(any));
+
+        // Assert
+        verify(mockRepository.updateAdminNote(any)).called(1);
+      });
+
+      blocTest<AdminFoodOrderCubit, AdminFoodOrderState>(
+        'emits [UpdateAdminNoteLoadingState, UpdateAdminNoteSuccessState] when repo is successful.',
+        setUp: () {
+          when(mockRepository.updateAdminNote(any))
+              .thenAnswer((_) async => tFoodOrder);
+        },
+        build: () => cubit,
+        act: (cubit) => cubit.updateAdminNote(tUpdateParams),
+        expect: () => <AdminFoodOrderState>[
+          const UpdateAdminNoteLoadingState(foodOrders: []),
+          UpdateAdminNoteSuccessState(
+            foodOrder: tFoodOrder,
+            foodOrders: const [],
+          ),
+        ],
+      );
+
+      blocTest<AdminFoodOrderCubit, AdminFoodOrderState>(
+        'emits [UpdateAdminNoteLoadingState, UpdateAdminNoteFailureState] when repo is failed.',
+        setUp: () {
+          when(mockRepository.updateAdminNote(any)).thenThrow(
+            const UpdateAdminNoteException(''),
+          );
+        },
+        build: () => cubit,
+        act: (cubit) => cubit.updateAdminNote(tUpdateParams),
+        expect: () => <AdminFoodOrderState>[
+          const UpdateAdminNoteLoadingState(foodOrders: []),
+          const UpdateAdminNoteFailureState(
             foodOrders: [],
             errorMessage: '',
           ),

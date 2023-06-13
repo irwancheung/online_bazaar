@@ -61,6 +61,28 @@ class AdminFoodOrderCubit extends HydratedCubit<AdminFoodOrderState> {
     }
   }
 
+  Future<void> updateAdminNote(UpdateAdminNoteParams params) async {
+    try {
+      emit(UpdateAdminNoteLoadingState(foodOrders: state.foodOrders));
+
+      final foodOrder = await _repository.updateAdminNote(params);
+
+      emit(
+        UpdateAdminNoteSuccessState(
+          foodOrder: foodOrder,
+          foodOrders: state.foodOrders,
+        ),
+      );
+    } on AppException catch (e) {
+      emit(
+        UpdateAdminNoteFailureState(
+          foodOrders: state.foodOrders,
+          errorMessage: e.message,
+        ),
+      );
+    }
+  }
+
   Future<void> exportFoodOrdersToSheetFile(
     ExportFoodOrdersToSheetFileParams params,
   ) async {

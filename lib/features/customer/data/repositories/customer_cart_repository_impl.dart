@@ -223,6 +223,15 @@ class CustomerCartRepositoryImpl implements CustomerCartRepository {
     try {
       await _networkInfo.checkConnection();
 
+      // validate bazaar period
+      final now = DateTime.now();
+      final startAt = params.setting.event.startAt!;
+      final endAt = params.setting.event.endAt!;
+
+      if (now.isBefore(startAt) || now.isAfter(endAt)) {
+        throw const CompleteCheckoutException('Bazaar belum dimulai.');
+      }
+
       final forCheckoutCart = CartModel.fromEntity(params.cart).copyWith(
         orderType: params.orderType,
         paymentType: params.paymentType,
