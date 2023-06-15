@@ -4,7 +4,12 @@ import 'package:responsive_framework/responsive_framework.dart';
 class AppScaffold extends StatelessWidget {
   final Widget child;
   final Widget? bottomNavigationBar;
-  const AppScaffold({super.key, required this.child, this.bottomNavigationBar});
+
+  const AppScaffold({
+    super.key,
+    required this.child,
+    this.bottomNavigationBar,
+  });
 
   @override
   Widget build(BuildContext context) {

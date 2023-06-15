@@ -82,16 +82,12 @@ class _HomePageState extends State<HomePage> {
                             builder: (context, state) {
                               if (state.cart.totalQuantity > 0) {
                                 return Stack(
-                                  alignment: Alignment.topCenter,
+                                  alignment: Alignment.topRight,
                                   children: [
-                                    SizedBox(
-                                      width: 35.r,
-                                    ),
                                     const FaIcon(
                                       FontAwesomeIcons.cartShopping,
                                     ),
                                     Positioned(
-                                      left: 25,
                                       child: Stack(
                                         alignment: Alignment.center,
                                         children: [

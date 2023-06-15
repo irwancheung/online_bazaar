@@ -1,7 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:online_bazaar/core/input_formatters/currency_formatter.dart';
 import 'package:online_bazaar/core/input_formatters/numeric_formatter.dart';
@@ -83,120 +82,112 @@ class _MenuItemFormState extends State<MenuItemForm> {
       key: _formKey,
       child: Padding(
         padding: EdgeInsets.fromLTRB(20.r, 0, 20.r, 20.r),
-        child: Column(
-          children: [
-            Expanded(
-              child: ListView(
+        child: SingleChildScrollView(
+          physics: const ClampingScrollPhysics(),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ImagePickerField(
-                        name: _imageField,
-                        radius: 50.r,
-                        initialValue: widget.item?.image,
-                        validator: FormBuilderValidators.compose([
-                          FormBuilderValidators.required(
-                            errorText: 'Wajib masukkan gambar.',
-                          ),
-                        ]),
+                  ImagePickerField(
+                    name: _imageField,
+                    radius: 50.r,
+                    initialValue: widget.item?.image,
+                    validator: FormBuilderValidators.compose([
+                      FormBuilderValidators.required(
+                        errorText: 'Wajib masukkan gambar.',
                       ),
-                    ],
-                  ),
-                  20.h.height,
-                  UnderlineTextField(
-                    label: 'Nama',
-                    name: _nameField,
-                    initialValue: widget.item?.name,
-                    validator: FormBuilderValidators.compose([
-                      FormBuilderValidators.required(),
-                      FormBuilderValidators.minLength(5),
-                      FormBuilderValidators.maxLength(50),
                     ]),
                   ),
-                  20.h.height,
-                  UnderlineTextField(
-                    label: 'Harga',
-                    name: _priceField,
-                    initialValue:
-                        widget.item?.sellingPrice.toCurrencyFormat() ?? 'Rp 0',
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [CurrencyFormatter()],
-                    validator: FormBuilderValidators.compose([
-                      FormBuilderValidators.required(),
-                      FormValidators.currency(min: 1000, max: 1000000),
-                    ]),
-                  ),
-                  20.h.height,
-                  UnderlineTextField(
-                    label: 'Jumlah',
-                    name: _quantityField,
-                    initialValue:
-                        widget.item?.remainingQuantity.toString() ?? '0',
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly,
-                      NumericFormatter(),
-                    ],
-                    validator: FormBuilderValidators.compose([
-                      FormBuilderValidators.required(),
-                      FormBuilderValidators.integer(),
-                      FormBuilderValidators.min(0),
-                      FormBuilderValidators.max(9999),
-                    ]),
-                  ),
-                  20.h.height,
-                  UnderlineTextField(
-                    label: 'Varian',
-                    name: _variantField,
-                    initialValue: widget.item?.variants != null
-                        ? widget.item!.variants.join(', ')
-                        : null,
-                    helperText:
-                        'Masukkan nama varian jika ada, dipisah dengan tanda koma. Contoh: Ayam, Udang, Ikan',
-                    helperMaxLines: 2,
-                  ),
-                  // 50.h.height,
                 ],
               ),
-            ),
-            KeyboardVisibilityBuilder(
-              builder: (context, visible) =>
-                  visible ? 150.h.height : 20.h.height,
-            ),
-            BlocConsumer<AdminMenuCubit, AdminMenuState>(
-              listener: (context, state) {
-                if (state is AddMenuItemFailureState) {
-                  context.showErrorSnackBar(state.errorMessage!);
-                }
+              20.h.height,
+              UnderlineTextField(
+                label: 'Nama',
+                name: _nameField,
+                initialValue: widget.item?.name,
+                validator: FormBuilderValidators.compose([
+                  FormBuilderValidators.required(),
+                  FormBuilderValidators.minLength(5),
+                  FormBuilderValidators.maxLength(50),
+                ]),
+              ),
+              20.h.height,
+              UnderlineTextField(
+                label: 'Harga',
+                name: _priceField,
+                initialValue:
+                    widget.item?.sellingPrice.toCurrencyFormat() ?? 'Rp 0',
+                keyboardType: TextInputType.number,
+                inputFormatters: [CurrencyFormatter()],
+                validator: FormBuilderValidators.compose([
+                  FormBuilderValidators.required(),
+                  FormValidators.currency(min: 1000, max: 1000000),
+                ]),
+              ),
+              20.h.height,
+              UnderlineTextField(
+                label: 'Jumlah',
+                name: _quantityField,
+                initialValue: widget.item?.remainingQuantity.toString() ?? '0',
+                keyboardType: TextInputType.number,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  NumericFormatter(),
+                ],
+                validator: FormBuilderValidators.compose([
+                  FormBuilderValidators.required(),
+                  FormBuilderValidators.integer(),
+                  FormBuilderValidators.min(0),
+                  FormBuilderValidators.max(9999),
+                ]),
+              ),
+              20.h.height,
+              UnderlineTextField(
+                label: 'Varian',
+                name: _variantField,
+                initialValue: widget.item?.variants != null
+                    ? widget.item!.variants.join(', ')
+                    : null,
+                helperText:
+                    'Masukkan nama varian jika ada, dipisah dengan tanda koma. Contoh: Ayam, Udang, Ikan',
+                helperMaxLines: 2,
+              ),
+              20.h.height,
+              BlocConsumer<AdminMenuCubit, AdminMenuState>(
+                listener: (context, state) {
+                  if (state is AddMenuItemFailureState) {
+                    context.showErrorSnackBar(state.errorMessage!);
+                  }
 
-                if (state is UpdateMenuItemFailureState) {
-                  context.showErrorSnackBar(state.errorMessage!);
-                }
+                  if (state is UpdateMenuItemFailureState) {
+                    context.showErrorSnackBar(state.errorMessage!);
+                  }
 
-                if (state is AddMenuItemSuccessState) {
-                  context.showSnackBar('Berhasil menambahkan menu baru.');
-                  context.pop();
-                }
+                  if (state is AddMenuItemSuccessState) {
+                    context.showSnackBar('Berhasil menambahkan menu baru.');
+                    context.pop();
+                  }
 
-                if (state is UpdateMenuItemSuccessState) {
-                  context.showSnackBar('Berhasil mengubah menu.');
-                  context.pop();
-                }
-              },
-              builder: (context, state) {
-                if (state is AddMenuItemLoadingState ||
-                    state is UpdateMenuItemLoadingState) {
-                  return const LoadingIndicator();
-                }
+                  if (state is UpdateMenuItemSuccessState) {
+                    context.showSnackBar('Berhasil mengubah menu.');
+                    context.pop();
+                  }
+                },
+                builder: (context, state) {
+                  if (state is AddMenuItemLoadingState ||
+                      state is UpdateMenuItemLoadingState) {
+                    return const LoadingIndicator();
+                  }
 
-                return AppElevatedButton(
-                  label: 'Simpan',
-                  onPressed: _submitItem,
-                );
-              },
-            )
-          ],
+                  return AppElevatedButton(
+                    label: 'Simpan',
+                    onPressed: _submitItem,
+                  );
+                },
+              )
+            ],
+          ),
         ),
       ),
     );

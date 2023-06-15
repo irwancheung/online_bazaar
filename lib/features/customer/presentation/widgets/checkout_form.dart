@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:online_bazaar/core/enums/food_order_enum.dart';
 import 'package:online_bazaar/exports.dart';
@@ -193,9 +192,7 @@ class _CheckoutFormState extends State<CheckoutForm> {
               ),
             ),
           ),
-          KeyboardVisibilityBuilder(
-            builder: (context, visible) => visible ? 170.h.height : 20.h.height,
-          ),
+          20.h.height,
           if (!cart.canCheckout)
             Padding(
               padding: EdgeInsets.only(bottom: 10.h),

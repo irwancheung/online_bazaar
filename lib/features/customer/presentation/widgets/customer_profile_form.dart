@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:online_bazaar/exports.dart';
 import 'package:online_bazaar/features/customer/domain/repositories/customer_cart_repository.dart';
@@ -74,87 +73,79 @@ class _CustomerProfileFormState extends State<CustomerProfileForm> {
 
         return FormBuilder(
           key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                child: ListView(
-                  padding: EdgeInsets.symmetric(vertical: 10.r),
-                  children: [
-                    UnderlineTextField(
-                      name: _nameField,
-                      label: 'Nama',
-                      initialValue: customer?.name,
-                      validator: FormBuilderValidators.compose([
-                        FormBuilderValidators.required(),
-                        FormBuilderValidators.minLength(5),
-                        FormBuilderValidators.maxLength(50),
-                      ]),
-                    ),
-                    20.h.height,
-                    UnderlineTextField(
-                      name: _emailField,
-                      label: 'Email',
-                      initialValue: customer?.email,
-                      hintText: 'Opsional',
-                      validator: FormBuilderValidators.compose([
-                        FormBuilderValidators.email(),
-                      ]),
-                    ),
-                    20.h.height,
-                    UnderlineTextField(
-                      name: _chaityaField,
-                      label: 'Cetya',
-                      initialValue: customer?.chaitya,
-                      validator: FormBuilderValidators.compose([
-                        FormBuilderValidators.required(),
-                        FormBuilderValidators.minLength(5),
-                        FormBuilderValidators.maxLength(20),
-                      ]),
-                    ),
-                    20.h.height,
-                    UnderlineTextField(
-                      name: _phoneField,
-                      label: 'Nomor HP',
-                      initialValue: customer?.phone,
-                      validator: FormBuilderValidators.compose([
-                        FormBuilderValidators.required(),
-                        FormBuilderValidators.numeric(),
-                        FormBuilderValidators.minLength(10),
-                        FormBuilderValidators.maxLength(15),
-                      ]),
-                    ),
-                    20.h.height,
-                    UnderlineTextField(
-                      name: _addressField,
-                      label: 'Alamat Pengiriman',
-                      initialValue: customer?.address,
-                      validator: FormBuilderValidators.compose([
-                        FormBuilderValidators.required(),
-                        FormBuilderValidators.minLength(10),
-                        FormBuilderValidators.maxLength(100),
-                      ]),
-                    ),
-                  ],
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                UnderlineTextField(
+                  name: _nameField,
+                  label: 'Nama',
+                  initialValue: customer?.name,
+                  validator: FormBuilderValidators.compose([
+                    FormBuilderValidators.required(),
+                    FormBuilderValidators.minLength(5),
+                    FormBuilderValidators.maxLength(50),
+                  ]),
                 ),
-              ),
-              KeyboardVisibilityBuilder(
-                builder: (context, visible) =>
-                    visible ? 120.h.height : 20.h.height,
-              ),
-              BlocBuilder<CustomerCubit, CustomerState>(
-                builder: (context, state) {
-                  if (state is SetCustomerLoadingState) {
-                    return const LoadingIndicator();
-                  }
+                20.h.height,
+                UnderlineTextField(
+                  name: _emailField,
+                  label: 'Email',
+                  initialValue: customer?.email,
+                  hintText: 'Opsional',
+                  validator: FormBuilderValidators.compose([
+                    FormBuilderValidators.email(),
+                  ]),
+                ),
+                20.h.height,
+                UnderlineTextField(
+                  name: _chaityaField,
+                  label: 'Cetya',
+                  initialValue: customer?.chaitya,
+                  validator: FormBuilderValidators.compose([
+                    FormBuilderValidators.required(),
+                    FormBuilderValidators.minLength(5),
+                    FormBuilderValidators.maxLength(20),
+                  ]),
+                ),
+                20.h.height,
+                UnderlineTextField(
+                  name: _phoneField,
+                  label: 'Nomor HP',
+                  initialValue: customer?.phone,
+                  validator: FormBuilderValidators.compose([
+                    FormBuilderValidators.required(),
+                    FormBuilderValidators.numeric(),
+                    FormBuilderValidators.minLength(10),
+                    FormBuilderValidators.maxLength(15),
+                  ]),
+                ),
+                20.h.height,
+                UnderlineTextField(
+                  name: _addressField,
+                  label: 'Alamat Pengiriman',
+                  initialValue: customer?.address,
+                  validator: FormBuilderValidators.compose([
+                    FormBuilderValidators.required(),
+                    FormBuilderValidators.minLength(10),
+                    FormBuilderValidators.maxLength(100),
+                  ]),
+                ),
+                20.h.height,
+                BlocBuilder<CustomerCubit, CustomerState>(
+                  builder: (context, state) {
+                    if (state is SetCustomerLoadingState) {
+                      return const LoadingIndicator();
+                    }
 
-                  return AppElevatedButton(
-                    label: 'Simpan',
-                    onPressed: _updateProfile,
-                  );
-                },
-              )
-            ],
+                    return AppElevatedButton(
+                      label: 'Simpan',
+                      onPressed: _updateProfile,
+                    );
+                  },
+                )
+              ],
+            ),
           ),
         );
       },

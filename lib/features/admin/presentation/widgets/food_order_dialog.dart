@@ -61,96 +61,91 @@ class _FoodOrderDialogState extends State<FoodOrderDialog> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const TopBar(),
-      body: Padding(
-        padding: EdgeInsets.fromLTRB(20.r, 0, 20.r, 20.r),
-        child: SafeArea(
-          child: BlocConsumer<AdminFoodOrderCubit, AdminFoodOrderState>(
-            listener: (context, state) {
-              if (state is UpdateFoodOrderStatusFailureState) {
-                context.showErrorSnackBar(state.errorMessage!);
-              }
-            },
-            builder: (context, state) {
-              if (state is UpdateFoodOrderStatusSuccessState &&
-                  _foodOrder.id == state.foodOrder.id) {
-                _setFoodOrderAndActions(state.foodOrder);
-              }
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(20.r, 0, 20.r, 20.r),
+          child: SafeArea(
+            child: BlocConsumer<AdminFoodOrderCubit, AdminFoodOrderState>(
+              listener: (context, state) {
+                if (state is UpdateFoodOrderStatusFailureState) {
+                  context.showErrorSnackBar(state.errorMessage!);
+                }
+              },
+              builder: (context, state) {
+                if (state is UpdateFoodOrderStatusSuccessState &&
+                    _foodOrder.id == state.foodOrder.id) {
+                  _setFoodOrderAndActions(state.foodOrder);
+                }
 
-              return Column(
-                children: [
-                  Expanded(
-                    child: ListView(
-                      shrinkWrap: true,
+                return Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            OrderStatusLabel(foodOrder: _foodOrder),
-                          ],
-                        ),
-                        20.h.height,
-                        HeaderSection(foodOrder: _foodOrder),
-                        const SectionDivider(),
-                        DetailSection(foodOrder: _foodOrder),
-                        10.h.height,
-                        NoteSection(foodOrder: _foodOrder),
-                        const SectionDivider(),
-                        PaymentSection(payment: _foodOrder.payment),
-                        10.h.height,
-                        DeliverySection(foodOrder: _foodOrder),
-                        const SectionDivider(),
-                        AdminNoteForm(foodOrder: _foodOrder),
-                        5.h.height,
+                        OrderStatusLabel(foodOrder: _foodOrder),
                       ],
                     ),
-                  ),
-                  if (_foodOrder.canUpdateStatus) ...[
                     20.h.height,
-                    if (state is UpdateFoodOrderStatusLoadingState)
-                      const LoadingIndicator()
-                    else
-                      Row(
-                        children: [
-                          Expanded(
-                            child: ValueListenableBuilder(
-                              valueListenable: nextStatus,
-                              builder: (context, value, child) {
-                                if (value != null) {
-                                  return AppSmallElevatedButton(
-                                    label: value == OrderStatus.completed
-                                        ? 'Selesai'
-                                        : 'Proses',
-                                    onPressed: () => _updateStatus(value),
-                                  );
-                                }
+                    HeaderSection(foodOrder: _foodOrder),
+                    const SectionDivider(),
+                    DetailSection(foodOrder: _foodOrder),
+                    10.h.height,
+                    NoteSection(foodOrder: _foodOrder),
+                    const SectionDivider(),
+                    PaymentSection(payment: _foodOrder.payment),
+                    10.h.height,
+                    DeliverySection(foodOrder: _foodOrder),
+                    const SectionDivider(),
+                    AdminNoteForm(foodOrder: _foodOrder),
+                    5.h.height,
+                    if (_foodOrder.canUpdateStatus) ...[
+                      20.h.height,
+                      if (state is UpdateFoodOrderStatusLoadingState)
+                        const LoadingIndicator()
+                      else
+                        Row(
+                          children: [
+                            Expanded(
+                              child: ValueListenableBuilder(
+                                valueListenable: nextStatus,
+                                builder: (context, value, child) {
+                                  if (value != null) {
+                                    return AppSmallElevatedButton(
+                                      label: value == OrderStatus.completed
+                                          ? 'Selesai'
+                                          : 'Proses',
+                                      onPressed: () => _updateStatus(value),
+                                    );
+                                  }
 
-                                return const SizedBox.shrink();
-                              },
+                                  return const SizedBox.shrink();
+                                },
+                              ),
                             ),
-                          ),
-                          10.w.width,
-                          Expanded(
-                            child: ValueListenableBuilder(
-                              valueListenable: cancelStatus,
-                              builder: (context, value, child) {
-                                if (value != null) {
-                                  return AppSmallElevatedButton(
-                                    label: 'Batal',
-                                    isCancel: true,
-                                    onPressed: () => _updateStatus(value),
-                                  );
-                                }
+                            10.w.width,
+                            Expanded(
+                              child: ValueListenableBuilder(
+                                valueListenable: cancelStatus,
+                                builder: (context, value, child) {
+                                  if (value != null) {
+                                    return AppSmallElevatedButton(
+                                      label: 'Batal',
+                                      isCancel: true,
+                                      onPressed: () => _updateStatus(value),
+                                    );
+                                  }
 
-                                return const SizedBox.shrink();
-                              },
+                                  return const SizedBox.shrink();
+                                },
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
+                          ],
+                        ),
+                    ],
                   ],
-                ],
-              );
-            },
+                );
+              },
+            ),
           ),
         ),
       ),
@@ -226,7 +221,7 @@ class DetailSection extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  width: 30.w,
+                  width: 30.r,
                   child: appText.caption('${item.quantity}x'),
                 ),
                 Expanded(

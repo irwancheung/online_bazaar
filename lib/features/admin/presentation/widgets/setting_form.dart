@@ -120,178 +120,206 @@ class _SettingFormState extends State<SettingForm>
     context.showErrorSnackBar('Pastikan semua kolom sudah diisi dengan benar.');
   }
 
+  Widget _buildSubmitButton() {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 20.r),
+      child: BlocBuilder<AdminSettingCubit, AdminSettingState>(
+        builder: (context, state) {
+          if (state is UpdateSettingLoadingState) {
+            return const LoadingIndicator();
+          }
+
+          return AppElevatedButton(
+            label: 'Simpan',
+            onPressed: _updateSetting,
+          );
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return FormBuilder(
-      key: _formKey,
-      child: Column(
-        children: [
-          TabBar(
-            controller: _tabController,
-            labelColor: theme.primaryColor,
-            labelStyle: TextStyle(fontSize: 14.sp),
-            unselectedLabelColor: theme.hintColor,
-            unselectedLabelStyle: TextStyle(fontSize: 12.sp),
-            indicatorColor: Colors.transparent,
-            labelPadding: EdgeInsets.zero,
-            padding: EdgeInsets.zero,
-            tabs: const [
-              Tab(text: 'Kegiatan'),
-              Tab(text: 'Pesanan'),
-              Tab(text: 'Pembayaran'),
-            ],
-          ),
-          BlocListener<AdminSettingCubit, AdminSettingState>(
-            listener: (context, state) {
-              if (state is UpdateSettingSuccessState) {
-                context.showSnackBar('Pengaturan berhasil diperbarui.');
-              }
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        final contentHeight = constraints.maxHeight - 50.h;
 
-              if (state is UpdateSettingFailureState) {
-                context.showErrorSnackBar(state.errorMessage!);
-              }
-            },
-            child: Expanded(
-              child: Padding(
-                padding: EdgeInsets.all(20.r),
-                child: TabBarView(
-                  controller: _tabController,
-                  children: [
-                    SingleChildScrollView(
-                      child: Column(
+        return FormBuilder(
+          key: _formKey,
+          child: SizedBox(
+            height: constraints.maxHeight,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 50.h,
+                    child: TabBar(
+                      controller: _tabController,
+                      labelColor: theme.primaryColor,
+                      labelStyle: TextStyle(fontSize: 14.sp),
+                      unselectedLabelColor: theme.hintColor,
+                      unselectedLabelStyle: TextStyle(fontSize: 12.sp),
+                      indicatorColor: Colors.transparent,
+                      labelPadding: EdgeInsets.zero,
+                      padding: EdgeInsets.zero,
+                      tabs: const [
+                        Tab(text: 'Kegiatan'),
+                        Tab(text: 'Pesanan'),
+                        Tab(text: 'Pembayaran'),
+                      ],
+                    ),
+                  ),
+                  BlocListener<AdminSettingCubit, AdminSettingState>(
+                    listener: (context, state) {
+                      if (state is UpdateSettingSuccessState) {
+                        context.showSnackBar('Pengaturan berhasil diperbarui.');
+                      }
+
+                      if (state is UpdateSettingFailureState) {
+                        context.showErrorSnackBar(state.errorMessage!);
+                      }
+                    },
+                    child: Container(
+                      constraints: BoxConstraints(
+                        minHeight: 400,
+                        maxHeight: contentHeight < 400 ? 400 : contentHeight,
+                      ),
+                      padding: EdgeInsets.symmetric(horizontal: 20.r),
+                      child: TabBarView(
+                        controller: _tabController,
                         children: [
-                          UnderlineTextField(
-                            name: _eventNameField,
-                            label: 'Nama Kegiatan',
-                            hintText: 'Contoh: Bazar Online 2023',
-                            initialValue: widget.setting.event.name,
-                            maxLength: 20,
-                            validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(),
-                              FormBuilderValidators.minLength(10),
-                            ]),
+                          Column(
+                            children: [
+                              UnderlineTextField(
+                                name: _eventNameField,
+                                label: 'Nama Kegiatan',
+                                hintText: 'Contoh: Bazar Online 2023',
+                                initialValue: widget.setting.event.name,
+                                maxLength: 20,
+                                validator: FormBuilderValidators.compose([
+                                  FormBuilderValidators.required(),
+                                  FormBuilderValidators.minLength(10),
+                                ]),
+                              ),
+                              20.h.height,
+                              UnderlineTextField(
+                                name: _eventPickupNoteField,
+                                label: 'Catatan Pengambilan',
+                                hintText: 'Contoh: Ambil di Vihara.',
+                                initialValue: widget.setting.event.pickupNote,
+                                maxLength: 50,
+                                validator: FormBuilderValidators.compose([
+                                  FormBuilderValidators.required(),
+                                  FormBuilderValidators.minLength(10),
+                                ]),
+                              ),
+                              20.h.height,
+                              DatePickerField(
+                                name: _eventStartAtField,
+                                label: 'Tanggal Mulai PO',
+                                initialDate: widget.setting.event.startAt,
+                                validator: FormBuilderValidators.compose([
+                                  FormBuilderValidators.required(),
+                                ]),
+                              ),
+                              20.h.height,
+                              DatePickerField(
+                                name: _eventEndAtField,
+                                label: 'Tanggal Tutup PO',
+                                initialDate: widget.setting.event.endAt,
+                                validator: FormBuilderValidators.compose([
+                                  FormBuilderValidators.required(),
+                                ]),
+                              ),
+                              if (contentHeight < 400)
+                                20.h.height
+                              else
+                                const Spacer(),
+                              _buildSubmitButton(),
+                            ],
                           ),
-                          20.h.height,
-                          UnderlineTextField(
-                            name: _eventPickupNoteField,
-                            label: 'Catatan Pengambilan',
-                            hintText: 'Contoh: Ambil di Vihara.',
-                            initialValue: widget.setting.event.pickupNote,
-                            maxLength: 50,
-                            validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(),
-                              FormBuilderValidators.minLength(10),
-                            ]),
+                          Column(
+                            children: [
+                              UnderlineTextField(
+                                name: _orderNumberPrefixField,
+                                label: 'Prefix ID Pesanan',
+                                initialValue:
+                                    widget.setting.foodOrder.orderNumberPrefix,
+                                maxLength: 7,
+                                inputFormatters: [AllCapsFormatter()],
+                                validator: FormBuilderValidators.compose([
+                                  FormBuilderValidators.required(),
+                                  FormBuilderValidators.minLength(1),
+                                  FormValidators.alphanumeric(),
+                                ]),
+                              ),
+                              if (contentHeight < 400)
+                                20.h.height
+                              else
+                                const Spacer(),
+                              _buildSubmitButton(),
+                            ],
                           ),
-                          20.h.height,
-                          DatePickerField(
-                            name: _eventStartAtField,
-                            label: 'Tanggal Mulai PO',
-                            initialDate: widget.setting.event.startAt,
-                            validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(),
-                            ]),
-                          ),
-                          20.h.height,
-                          DatePickerField(
-                            name: _eventEndAtField,
-                            label: 'Tanggal Tutup PO',
-                            initialDate: widget.setting.event.endAt,
-                            validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(),
-                            ]),
+                          Column(
+                            children: [
+                              UnderlineTextField(
+                                name: _transferToField,
+                                label: 'Transfer ke',
+                                hintText:
+                                    'Contoh: BCA 8370009211 Yayasan Pandita Sabha BDI',
+                                initialValue: widget.setting.payment.transferTo,
+                                maxLength: 30,
+                                validator: FormBuilderValidators.compose([
+                                  FormBuilderValidators.required(),
+                                  FormBuilderValidators.minLength(10),
+                                ]),
+                              ),
+                              20.h.height,
+                              UnderlineTextField(
+                                name: _transferNoteFormatField,
+                                label: 'Format Berita Transfer',
+                                hintText:
+                                    'Contoh: Bazar_[nama]_[cetya]_[no. pesanan]',
+                                initialValue:
+                                    widget.setting.payment.transferNoteFormat,
+                                maxLength: 30,
+                                validator: FormBuilderValidators.compose([
+                                  FormBuilderValidators.required(),
+                                  FormBuilderValidators.minLength(10),
+                                ]),
+                              ),
+                              20.h.height,
+                              UnderlineTextField(
+                                name: _sendTransferProofToField,
+                                label: 'Kirim Bukti Transfer ke',
+                                hintText: 'Contoh: Admin Bazaar (081234567890)',
+                                initialValue:
+                                    widget.setting.payment.sendTransferProofTo,
+                                maxLength: 30,
+                                validator: FormBuilderValidators.compose([
+                                  FormBuilderValidators.required(),
+                                  FormBuilderValidators.minLength(10),
+                                ]),
+                              ),
+                              if (contentHeight < 400)
+                                20.h.height
+                              else
+                                const Spacer(),
+                              _buildSubmitButton(),
+                            ],
                           ),
                         ],
                       ),
                     ),
-                    SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          UnderlineTextField(
-                            name: _orderNumberPrefixField,
-                            label: 'Prefix ID Pesanan',
-                            initialValue:
-                                widget.setting.foodOrder.orderNumberPrefix,
-                            maxLength: 7,
-                            inputFormatters: [AllCapsFormatter()],
-                            validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(),
-                              FormBuilderValidators.minLength(1),
-                              FormValidators.alphanumeric(),
-                            ]),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          UnderlineTextField(
-                            name: _transferToField,
-                            label: 'Transfer ke',
-                            hintText:
-                                'Contoh: BCA 8370009211 Yayasan Pandita Sabha BDI',
-                            initialValue: widget.setting.payment.transferTo,
-                            maxLength: 30,
-                            validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(),
-                              FormBuilderValidators.minLength(10),
-                            ]),
-                          ),
-                          20.h.height,
-                          UnderlineTextField(
-                            name: _transferNoteFormatField,
-                            label: 'Format Berita Transfer',
-                            hintText:
-                                'Contoh: Bazar_[nama]_[cetya]_[no. pesanan]',
-                            initialValue:
-                                widget.setting.payment.transferNoteFormat,
-                            maxLength: 30,
-                            validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(),
-                              FormBuilderValidators.minLength(10),
-                            ]),
-                          ),
-                          20.h.height,
-                          UnderlineTextField(
-                            name: _sendTransferProofToField,
-                            label: 'Kirim Bukti Transfer ke',
-                            hintText: 'Contoh: Admin Bazaar (081234567890)',
-                            initialValue:
-                                widget.setting.payment.sendTransferProofTo,
-                            maxLength: 30,
-                            validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(),
-                              FormBuilderValidators.minLength(10),
-                            ]),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
-          Padding(
-            padding: EdgeInsets.all(20.r),
-            child: BlocBuilder<AdminSettingCubit, AdminSettingState>(
-              builder: (context, state) {
-                if (state is UpdateSettingLoadingState) {
-                  return const LoadingIndicator();
-                }
-
-                return AppElevatedButton(
-                  label: 'Simpan',
-                  onPressed: _updateSetting,
-                );
-              },
-            ),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

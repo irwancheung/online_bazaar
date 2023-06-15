@@ -61,46 +61,45 @@ class _LoginFormState extends State<LoginForm> {
       builder: (context, state) {
         return FormBuilder(
           key: _formKey,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                UnderlineTextField(
-                  name: _emailField,
-                  label: 'Email',
-                  validator: FormBuilderValidators.compose([
-                    FormBuilderValidators.required(),
-                    FormBuilderValidators.email(),
-                  ]),
-                ),
-                20.h.height,
-                UnderlineTextField(
-                  name: _passwordField,
-                  label: 'Password',
-                  obscureText: true,
-                  validator: FormBuilderValidators.compose([
-                    FormBuilderValidators.required(),
-                    FormBuilderValidators.minLength(6),
-                  ]),
-                ),
-                100.h.height,
-                BlocBuilder<AdminAuthCubit, AdminAuthState>(
-                  builder: (context, state) {
-                    if (state is LoginSuccessState) {
-                      _loggedIn = true;
-                    }
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              UnderlineTextField(
+                name: _emailField,
+                label: 'Email',
+                validator: FormBuilderValidators.compose([
+                  FormBuilderValidators.required(),
+                  FormBuilderValidators.email(),
+                ]),
+              ),
+              20.h.height,
+              UnderlineTextField(
+                name: _passwordField,
+                label: 'Password',
+                obscureText: true,
+                validator: FormBuilderValidators.compose([
+                  FormBuilderValidators.required(),
+                  FormBuilderValidators.minLength(6),
+                ]),
+              ),
+              100.h.height,
+              BlocBuilder<AdminAuthCubit, AdminAuthState>(
+                builder: (context, state) {
+                  if (state is LoginSuccessState) {
+                    _loggedIn = true;
+                  }
 
-                    if (state is LoginLoadingState) {
-                      return const LoadingIndicator();
-                    }
+                  if (state is LoginLoadingState) {
+                    return const LoadingIndicator();
+                  }
 
-                    return AppElevatedButton(
-                      label: 'Masuk',
-                      onPressed: _login,
-                    );
-                  },
-                )
-              ],
-            ),
+                  return AppElevatedButton(
+                    label: 'Masuk',
+                    onPressed: _login,
+                  );
+                },
+              )
+            ],
           ),
         );
       },

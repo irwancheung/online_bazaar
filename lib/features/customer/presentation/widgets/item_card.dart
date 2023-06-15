@@ -39,72 +39,70 @@ class _ItemCardState extends State<ItemCard> {
       child: Padding(
         padding: const EdgeInsets.only(right: 30),
         child: Stack(
-          alignment: Alignment.topCenter,
+          alignment: Alignment.center,
           children: [
             Column(
               children: [
                 const Spacer(),
-                AppCard(
-                  child: Container(
-                    constraints: const BoxConstraints(maxWidth: 200),
-                    width: 200.w,
-                    height: 250.h,
-                    padding: EdgeInsets.all(20.r),
-                    child: Column(
-                      children: [
-                        const Spacer(),
-                        if (_outOfStock)
-                          Column(
-                            children: [
-                              appText.body(
-                                'Habis',
-                                color: theme.colorScheme.error,
-                                fontWeight: FontWeight.w600,
+                Expanded(
+                  flex: 2,
+                  child: AspectRatio(
+                    aspectRatio: 3 / 4,
+                    child: AppCard(
+                      child: Padding(
+                        padding: EdgeInsets.all(20.r),
+                        child: Column(
+                          children: [
+                            const Spacer(),
+                            Expanded(
+                              child: Column(
+                                children: [
+                                  appText.caption(
+                                    widget.item.name,
+                                    fontWeight: FontWeight.w600,
+                                    textAlign: TextAlign.center,
+                                    color: _textColor,
+                                    decoration: _decoration,
+                                  ),
+                                  5.h.height,
+                                  appText.label(
+                                    widget.item.variants.join(', '),
+                                    color: theme.hintColor,
+                                    overflow: TextOverflow.ellipsis,
+                                    decoration: _decoration,
+                                  ),
+                                  const Spacer(),
+                                  appText.caption(
+                                    widget.item.sellingPrice.toCurrencyFormat(),
+                                    color: _textColor,
+                                    decoration: _decoration,
+                                  ),
+                                ],
                               ),
-                              20.h.height,
-                            ],
-                          ),
-                        SizedBox(
-                          height: 100.h,
-                          child: Column(
-                            children: [
-                              appText.body(
-                                widget.item.name,
-                                fontWeight: FontWeight.w600,
-                                textAlign: TextAlign.center,
-                                color: _textColor,
-                                decoration: _decoration,
-                              ),
-                              5.h.height,
-                              appText.label(
-                                widget.item.variants.join(', '),
-                                color: theme.hintColor,
-                                overflow: TextOverflow.ellipsis,
-                                decoration: _decoration,
-                              ),
-                              const Spacer(),
-                              appText.caption(
-                                widget.item.sellingPrice.toCurrencyFormat(),
-                                color: _textColor,
-                                decoration: _decoration,
-                              ),
-                              20.h.height,
-                            ],
-                          ),
+                            )
+                          ],
                         ),
-                      ],
+                      ),
                     ),
                   ),
                 ),
               ],
             ),
-            Positioned(
-              top: 30,
-              child: CircleNetworkImage(
-                url: widget.item.image,
-                radius: 70.r,
-                grayScale: _outOfStock,
-              ),
+            Column(
+              children: [
+                const Spacer(),
+                Expanded(
+                  flex: 4,
+                  child: Align(
+                    alignment: Alignment.topCenter,
+                    child: CircleNetworkImage(
+                      url: widget.item.image,
+                      radius: 65.h,
+                      grayScale: _outOfStock,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),

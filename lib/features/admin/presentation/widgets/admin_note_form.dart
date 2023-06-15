@@ -29,7 +29,7 @@ class _AdminNoteFormState extends State<AdminNoteForm> {
       context.read<AdminFoodOrderCubit>().updateAdminNote(
             UpdateAdminNoteParams(
               id: widget.foodOrder.id,
-              adminNote: adminNote,
+              adminNote: adminNote.trim(),
             ),
           );
     }
@@ -47,10 +47,9 @@ class _AdminNoteFormState extends State<AdminNoteForm> {
               name: _noteField,
               label: 'Catatan Admin',
               initialValue: widget.foodOrder.adminNote ?? '',
-              maxLines: 3,
             ),
           ),
-          10.w.width,
+          10.r.width,
           BlocConsumer<AdminFoodOrderCubit, AdminFoodOrderState>(
             listener: (context, state) {
               if (state is UpdateAdminNoteFailureState) {
@@ -64,14 +63,14 @@ class _AdminNoteFormState extends State<AdminNoteForm> {
             builder: (context, state) {
               if (state is UpdateAdminNoteLoadingState) {
                 return SizedBox(
-                  width: 80.w,
+                  width: 80.r,
                   height: 40.h,
                   child: const LoadingIndicator(),
                 );
               }
 
               return SizedBox(
-                width: 80.w,
+                width: 100.r,
                 child: AppSmallElevatedButton(
                   label: 'Ubah',
                   onPressed: _updateNote,
