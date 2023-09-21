@@ -90,7 +90,7 @@ class MyApp extends StatelessWidget {
           return ResponsiveBreakpoints.builder(
             child: child!,
             breakpoints: [
-              const Breakpoint(start: 0, end: maxMobileWidth, name: MOBILE)
+              const Breakpoint(start: 0, end: maxMobileWidth, name: MOBILE),
             ],
           );
         },

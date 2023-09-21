@@ -22,7 +22,7 @@ class AppScaffold extends StatelessWidget {
             ? Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(width: maxMobileWidth, child: bottomNavigationBar)
+                  SizedBox(width: maxMobileWidth, child: bottomNavigationBar),
                 ],
               )
             : null;

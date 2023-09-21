@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -28,8 +27,4 @@ Future<void> initFirebase() async {
     firestore.useFirestoreEmulator('localhost', 8080);
     storage.useStorageEmulator('localhost', 9199);
   }
-
-  await FirebaseAppCheck.instance.activate(
-    webRecaptchaSiteKey: const String.fromEnvironment('RECAPTCHA_KEY'),
-  );
 }

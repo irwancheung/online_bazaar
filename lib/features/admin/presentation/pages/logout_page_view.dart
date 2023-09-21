@@ -51,7 +51,7 @@ class LogOutPageView extends StatelessWidget {
                               context.read<AdminAuthCubit>().logOut(),
                         );
                       },
-                    )
+                    ),
                   ],
                 ),
               ),

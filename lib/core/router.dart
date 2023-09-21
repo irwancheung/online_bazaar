@@ -6,9 +6,7 @@ import 'package:online_bazaar/features/admin/presentation/pages/admin_page.dart'
 import 'package:online_bazaar/features/admin/presentation/pages/login_page.dart';
 import 'package:online_bazaar/features/customer/presentation/pages/home_page.dart';
 
-final router = const String.fromEnvironment('USER_TYPE') == 'admin'
-    ? _adminRouter
-    : _customerRouter;
+final router = const String.fromEnvironment('USER_TYPE') == 'admin' ? _adminRouter : _customerRouter;
 
 final _customerRouter = GoRouter(
   debugLogDiagnostics: true,
@@ -40,7 +38,7 @@ final _adminRouter = GoRouter(
     ),
   ],
   redirect: (context, state) {
-    final location = state.location;
+    final location = state.fullPath ?? '';
 
     final auth = sl<FirebaseAuth>();
     final loggedIn = auth.currentUser != null;

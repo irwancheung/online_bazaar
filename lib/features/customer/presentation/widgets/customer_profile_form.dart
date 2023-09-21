@@ -143,7 +143,7 @@ class _CustomerProfileFormState extends State<CustomerProfileForm> {
                       onPressed: _updateProfile,
                     );
                   },
-                )
+                ),
               ],
             ),
           ),

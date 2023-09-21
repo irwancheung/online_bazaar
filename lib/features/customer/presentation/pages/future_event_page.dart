@@ -30,7 +30,7 @@ class FutureEventPage extends StatelessWidget {
             20.h.height,
             appText.caption('Mulai PO: $startAt'),
             5.h.height,
-            appText.caption('Tutup PO: $endAt')
+            appText.caption('Tutup PO: $endAt'),
           ],
         ),
       ),

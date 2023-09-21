@@ -185,7 +185,7 @@ class _MenuItemFormState extends State<MenuItemForm> {
                     onPressed: _submitItem,
                   );
                 },
-              )
+              ),
             ],
           ),
         ),

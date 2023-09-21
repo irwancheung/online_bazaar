@@ -251,7 +251,7 @@ void main() {
             variant: 'Regular',
             quantity: 1,
             note: '',
-          )
+          ),
         ],
       );
 

@@ -121,7 +121,7 @@ class _ImagePickerFieldState extends State<ImagePickerField> {
                   field.errorText!,
                   color: theme.colorScheme.error,
                 ),
-              )
+              ),
           ],
         );
       },

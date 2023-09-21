@@ -62950,5 +62950,5 @@ final mockFoodOrderRecipt = Uint8List.fromList([
   174,
   66,
   96,
-  130
+  130,
 ]);

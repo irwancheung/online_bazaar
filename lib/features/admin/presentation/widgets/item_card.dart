@@ -67,7 +67,7 @@ class _ItemCardState extends State<ItemCard> {
                             .caption('Stok: ${widget.item.remainingQuantity}'),
                       ],
                     ),
-                  )
+                  ),
                 ],
               ),
               Row(
@@ -90,7 +90,7 @@ class _ItemCardState extends State<ItemCard> {
                             ),
                       );
                     },
-                  )
+                  ),
                 ],
               ),
             ],

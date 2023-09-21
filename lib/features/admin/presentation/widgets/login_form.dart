@@ -98,7 +98,7 @@ class _LoginFormState extends State<LoginForm> {
                     onPressed: _login,
                   );
                 },
-              )
+              ),
             ],
           ),
         );

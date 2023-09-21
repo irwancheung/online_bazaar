@@ -54,7 +54,7 @@ void main() {
         act: (cubit) => cubit.getSetting(),
         expect: () => <AdminSettingState>[
           GetSettingLoadingState(setting: cubit.state.setting),
-          GetSettingSuccessState(setting: cubit.state.setting)
+          GetSettingSuccessState(setting: cubit.state.setting),
         ],
       );
 
@@ -68,7 +68,7 @@ void main() {
         act: (cubit) => cubit.getSetting(),
         expect: () => <AdminSettingState>[
           GetSettingLoadingState(setting: cubit.state.setting),
-          GetSettingFailureState(setting: cubit.state.setting, errorMessage: '')
+          GetSettingFailureState(setting: cubit.state.setting, errorMessage: ''),
         ],
       );
     });
@@ -122,7 +122,7 @@ void main() {
         act: (cubit) => cubit.updateSetting(tParams),
         expect: () => <AdminSettingState>[
           UpdateSettingLoadingState(setting: preState.setting),
-          const UpdateSettingSuccessState(setting: tUpdatedSetting)
+          const UpdateSettingSuccessState(setting: tUpdatedSetting),
         ],
       );
 
@@ -141,7 +141,7 @@ void main() {
           UpdateSettingFailureState(
             setting: cubit.state.setting,
             errorMessage: '',
-          )
+          ),
         ],
       );
     });
